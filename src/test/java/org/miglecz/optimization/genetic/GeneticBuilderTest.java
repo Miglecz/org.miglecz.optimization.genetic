@@ -10,7 +10,7 @@ public class GeneticBuilderTest {
     @Test
     void buildShouldReturnGeneticInstance() {
         // Given
-        final GeneticBuilder<Integer> builder = GeneticBuilder.<Integer>builder()
+        final GeneticBuilder<Integer> builder = GeneticBuilder.builder(Integer.class)
                 .withInitialize(Collections::emptyList)
                 .withSelectionsList(List.of());
         // When
@@ -22,7 +22,7 @@ public class GeneticBuilderTest {
     @Test(expectedExceptions = NullPointerException.class)
     void buildShouldFailWhenNoInitialize() {
         // Given
-        final GeneticBuilder<Integer> builder = GeneticBuilder.<Integer>builder()
+        final GeneticBuilder<Integer> builder = GeneticBuilder.builder(Integer.class)
                 //.withInitialize(Collections::emptyList)
                 .withSelectionsList(List.of());
         // When
@@ -33,7 +33,7 @@ public class GeneticBuilderTest {
     @Test(expectedExceptions = NullPointerException.class)
     void buildShouldFailWhenNoSelectionsList() {
         // Given
-        final GeneticBuilder<Integer> builder = GeneticBuilder.<Integer>builder()
+        final GeneticBuilder<Integer> builder = GeneticBuilder.builder(Integer.class)
                 .withInitialize(Collections::emptyList)
                 //.withSelectionsList(List.of())
                 ;

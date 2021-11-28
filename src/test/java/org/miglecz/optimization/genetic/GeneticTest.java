@@ -32,7 +32,7 @@ public class GeneticTest extends TestBase {
     @Test(dataProvider = "data")
     void streamShouldGenerateIterations(final int generations) {
         // Given
-        final Optimization<Integer> optimization = GeneticBuilder.<Integer>builder()
+        final Optimization<Integer> optimization = GeneticBuilder.builder(Integer.class)
                 .withInitialize(Collections::emptyList)
                 .withSelectionsList(emptyList())
                 .build();
@@ -50,7 +50,7 @@ public class GeneticTest extends TestBase {
     @Test
     void selectionsShouldOverrideInitialize() {
         // Given
-        final Optimization<Integer> optimization = GeneticBuilder.<Integer>builder()
+        final Optimization<Integer> optimization = GeneticBuilder.builder(Integer.class)
                 .withInitialize(() -> List.of(newSolution(0, 0)))
                 .withSelectionsList(List.of(
                         List.of(
@@ -73,7 +73,7 @@ public class GeneticTest extends TestBase {
     @Test
     void selectionShouldAggregate() {
         // Given
-        final Optimization<Integer> optimization = GeneticBuilder.<Integer>builder()
+        final Optimization<Integer> optimization = GeneticBuilder.builder(Integer.class)
                 .withInitialize(Collections::emptyList)
                 .withSelectionsList(List.of(
                         List.of(
@@ -97,7 +97,7 @@ public class GeneticTest extends TestBase {
     @Test
     void selectionsShouldOverrideSelections() {
         // Given
-        final Optimization<Integer> optimization = GeneticBuilder.<Integer>builder()
+        final Optimization<Integer> optimization = GeneticBuilder.builder(Integer.class)
                 .withInitialize(Collections::emptyList)
                 .withSelectionsList(List.of(
                         List.of(
@@ -123,7 +123,7 @@ public class GeneticTest extends TestBase {
     @Test(expectedExceptions = InitializationException.class)
     void initErrorShouldThrowException() {
         // Given
-        final Optimization<Integer> optimization = GeneticBuilder.<Integer>builder()
+        final Optimization<Integer> optimization = GeneticBuilder.builder(Integer.class)
                 .withInitialize(() -> {throw new RuntimeException();})
                 .withSelectionsList(List.of())
                 .build();
@@ -137,7 +137,7 @@ public class GeneticTest extends TestBase {
     @Test(expectedExceptions = InitializationException.class)
     void initNullResultShouldThrowException() {
         // Given
-        final Optimization<Integer> optimization = GeneticBuilder.<Integer>builder()
+        final Optimization<Integer> optimization = GeneticBuilder.builder(Integer.class)
                 .withInitialize(() -> null)
                 .withSelectionsList(List.of())
                 .build();
@@ -151,7 +151,7 @@ public class GeneticTest extends TestBase {
     @Test(expectedExceptions = SelectionException.class)
     void selectionErrorShouldThrowException() {
         // Given
-        final Optimization<Integer> optimization = GeneticBuilder.<Integer>builder()
+        final Optimization<Integer> optimization = GeneticBuilder.builder(Integer.class)
                 .withInitialize(Collections::emptyList)
                 .withSelectionsList(List.of(
                         List.of(
@@ -169,7 +169,7 @@ public class GeneticTest extends TestBase {
     @Test(expectedExceptions = SelectionException.class)
     void selectionNullResultShouldThrowException() {
         // Given
-        final Optimization<Integer> optimization = GeneticBuilder.<Integer>builder()
+        final Optimization<Integer> optimization = GeneticBuilder.builder(Integer.class)
                 .withInitialize(Collections::emptyList)
                 .withSelectionsList(List.of(
                         List.of(

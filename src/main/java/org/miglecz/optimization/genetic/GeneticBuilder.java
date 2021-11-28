@@ -1,17 +1,19 @@
 package org.miglecz.optimization.genetic;
 
-import static lombok.AccessLevel.PRIVATE;
 import java.util.List;
 import java.util.Objects;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = PRIVATE)
 public class GeneticBuilder<T> {
+    private final Class<T> klass;
     private InitSelection<T> initialize;
     private List<List<MultiSelection<T>>> selectionsList;
 
-    public static <T> GeneticBuilder<T> builder() {
-        return new GeneticBuilder<>();
+    private GeneticBuilder(final Class<T> klass) {
+        this.klass = klass;
+    }
+
+    public static <T> GeneticBuilder<T> builder(final Class<T> klass) {
+        return new GeneticBuilder<>(klass);
     }
 
     public GeneticBuilder<T> withInitialize(final InitSelection<T> initialize) {
