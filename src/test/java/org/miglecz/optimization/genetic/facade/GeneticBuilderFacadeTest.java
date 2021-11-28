@@ -14,10 +14,21 @@ import java.util.stream.IntStream;
 import org.miglecz.optimization.Iteration;
 import org.miglecz.optimization.genetic.Genetic;
 import org.miglecz.optimization.genetic.TestBase;
+import org.miglecz.optimization.genetic.facade.operator.Mutation;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class GeneticBuilderFacadeTest extends TestBase {
+    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "random should not be null")
+    void buildShouldFailWithRandomNull() {
+        // Given
+        // When
+        builder(Integer.class)
+                .withRandom(null)
+                .build();
+        // Then
+    }
+
     @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "population should not be null")
     void buildShouldFailWithPopulationNull() {
         // Given
@@ -192,5 +203,70 @@ public class GeneticBuilderFacadeTest extends TestBase {
                 , newIteration(2, List.of(newSolution(3, 3)))
                 , newIteration(3, List.of(newSolution(4, 4)))
         )));
+    }
+
+    @DataProvider
+    Object[][] mutantsData() {
+        return new Object[][]{
+                new Object[]{0, List.of(), 0, (Mutation<Integer>) impl -> impl, 1, List.of(newIteration(0, List.of()))}
+                , new Object[]{0, List.of(), 1, (Mutation<Integer>) impl -> null, 1, List.of(newIteration(0, List.of()))}
+                , new Object[]{2, List.of(1, 2), 2, (Mutation<Integer>) impl -> impl + 1, 3, List.of( //@formatter:off
+                        newIteration(0, List.of(newSolution(0, 1), newSolution(1, 2)))
+                        , newIteration(1, List.of(newSolution(2, 3), newSolution(1, 2)))
+                        , newIteration(2, List.of(newSolution(3, 4), newSolution(3, 4)))
+                )} //@formatter:on
+        };
+    }
+
+    @Test(dataProvider = "mutantsData")
+    void streamShouldReturnMutants(
+            final Integer population
+            , final List<Integer> impls
+            , final Integer mutant
+            , final Mutation<Integer> mutation
+            , final Integer limit
+            , final List<Iteration<Integer>> expected
+    ) {
+        // Given
+        final AtomicInteger index = new AtomicInteger(0);
+        final Genetic<Integer> genetic = builder(Integer.class)
+                .withPopulation(population)
+                .withFitness(impl -> impl - 1)
+                .withFactory(() -> impls.get(index.getAndIncrement()))
+                .withRandom(new Random(1))
+                .withMutant(mutant, mutation)
+                .build();
+        // When
+        final List<Iteration<Integer>> result = genetic.stream()
+                .limit(limit)
+                .collect(toList());
+        // Then
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "mutant should not be null")
+    void builderShouldFailWhenMutantNull() {
+        // Given
+        // When
+        builder(Integer.class)
+                .withPopulation(0)
+                .withFitness(impl -> 0)
+                .withFactory(() -> 0)
+                .withMutant(null, i -> i)
+                .build();
+        // Then
+    }
+
+    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "mutation should not be null")
+    void builderShouldFailWhenMutationNull() {
+        // Given
+        // When
+        builder(Integer.class)
+                .withPopulation(0)
+                .withFitness(impl -> 0)
+                .withFactory(() -> 0)
+                .withMutant(0, null)
+                .build();
+        // Then
     }
 }
