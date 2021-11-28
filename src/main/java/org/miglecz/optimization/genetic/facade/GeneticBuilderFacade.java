@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import org.miglecz.optimization.genetic.Genetic;
 import org.miglecz.optimization.genetic.MultiSelection;
+import org.miglecz.optimization.genetic.facade.operator.EliteSelection;
 import org.miglecz.optimization.genetic.facade.operator.Factory;
 import org.miglecz.optimization.genetic.facade.operator.Fitness;
 import org.miglecz.optimization.genetic.facade.operator.ImmigrantSelection;
@@ -16,6 +17,7 @@ public class GeneticBuilderFacade<T> {
     private Integer population;
     private Factory<T> factory;
     private Fitness<T> fitness;
+    private Integer elite;
     private Integer immigrant;
 
     private GeneticBuilderFacade(final Class<T> klass) {
@@ -47,6 +49,11 @@ public class GeneticBuilderFacade<T> {
         return this;
     }
 
+    public GeneticBuilderFacade<T> withElite(final Integer elite) {
+        this.elite = elite;
+        return this;
+    }
+
     public GeneticBuilderFacade<T> withImmigrant(final Integer immigrant) {
         this.immigrant = immigrant;
         return this;
@@ -57,6 +64,9 @@ public class GeneticBuilderFacade<T> {
         notNull(fitness, "fitness");
         notNull(factory, "factory");
         final List<MultiSelection<T>> mainSelection = new ArrayList<>();
+        if (elite != null) {
+            mainSelection.add(new EliteSelection<>(elite));
+        }
         if (immigrant != null) {
             mainSelection.add(new ImmigrantSelection<>(immigrant, fitness, factory));
         }
@@ -64,6 +74,7 @@ public class GeneticBuilderFacade<T> {
                 new InitialSelection<>(population, fitness, factory)
                 , List.of( //@formatter:off
                         unmodifiableList(mainSelection)
+                        , List.of(new EliteSelection<>(population))
                 ) //@formatter:on
         );
     }

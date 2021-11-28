@@ -87,8 +87,8 @@ public class GeneticBuilderFacadeTest extends TestBase {
         return new Object[][]{
                 new Object[]{0, List.of(1, 2), 1, 3, List.of(
                         newIteration(0, List.of())
-                        , newIteration(1, List.of(newSolution(0, 1)))
-                        , newIteration(2, List.of(newSolution(0, 2)))
+                        , newIteration(1, List.of())
+                        , newIteration(2, List.of())
                 )}
                 , new Object[]{1, List.of(1, 2, 3), 1, 3, List.of( //@formatter:off
                         newIteration(0, List.of(newSolution(0, 1)))
@@ -97,8 +97,8 @@ public class GeneticBuilderFacadeTest extends TestBase {
                 )} //@formatter:on
                 , new Object[]{1, List.of(1, 2, 3, 4, 5), 2, 3, List.of( //@formatter:off
                         newIteration(0, List.of(newSolution(0, 1)))
-                        , newIteration(1, List.of(newSolution(0, 2), newSolution(0, 3)))
-                        , newIteration(2, List.of(newSolution(0, 4), newSolution(0, 5)))
+                        , newIteration(1, List.of(newSolution(0, 2)))
+                        , newIteration(2, List.of(newSolution(0, 4)))
                 )} //@formatter:on
                 , new Object[]{2, List.of(1, 2, 3, 4), 1, 3, List.of( //@formatter:off
                         newIteration(0, List.of(newSolution(0, 1), newSolution(0, 2)))
@@ -124,5 +124,73 @@ public class GeneticBuilderFacadeTest extends TestBase {
                 .collect(toList());
         // Then
         assertThat(result, equalTo(expected));
+    }
+
+    @DataProvider
+    Object[][] eliteData() {
+        return new Object[][]{
+                new Object[]{0, List.of(), 1, 3, List.of(
+                        newIteration(0, List.of())
+                        , newIteration(1, List.of())
+                        , newIteration(2, List.of())
+                )}
+                , new Object[]{1, List.of(1), 1, 3, List.of( //@formatter:off
+                        newIteration(0, List.of(newSolution(0, 1)))
+                        , newIteration(1, List.of(newSolution(0, 1)))
+                        , newIteration(2, List.of(newSolution(0, 1)))
+                )} //@formatter:on
+                , new Object[]{1, List.of(1), 2, 3, List.of( //@formatter:off
+                        newIteration(0, List.of(newSolution(0, 1)))
+                        , newIteration(1, List.of(newSolution(0, 1)))
+                        , newIteration(2, List.of(newSolution(0, 1)))
+                )} //@formatter:on
+                , new Object[]{2, List.of(1, 2), 2, 3, List.of( //@formatter:off
+                        newIteration(0, List.of(newSolution(0, 1), newSolution(0, 2)))
+                        , newIteration(1, List.of(newSolution(0, 1), newSolution(0, 2)))
+                        , newIteration(2, List.of(newSolution(0, 1), newSolution(0, 2)))
+                )} //@formatter:on
+        };
+    }
+
+    @Test(dataProvider = "eliteData")
+    void streamShouldReturnElites(final Integer population, final List<Integer> impls, final Integer elite, final int generation, final List<Iteration<Integer>> expected) {
+        // Given
+        final AtomicInteger index = new AtomicInteger();
+        final Genetic<Integer> genetic = builder(Integer.class)
+                .withPopulation(population)
+                .withFitness(impl -> 0)
+                .withFactory(() -> impls.get(index.getAndIncrement()))
+                .withElite(elite)
+                .build();
+        // When
+        final List<Iteration<Integer>> result = genetic.stream()
+                .limit(generation)
+                .collect(toList());
+        // Then
+        assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    void streamShouldReturnFixedIterationSizes() {
+        // Given
+        final AtomicInteger index = new AtomicInteger(1);
+        final Genetic<Integer> genetic = builder(Integer.class)
+                .withPopulation(1)
+                .withFitness(impl -> impl)
+                .withFactory(index::getAndIncrement)
+                .withElite(999)
+                .withImmigrant(1)
+                .build();
+        // When
+        final List<Iteration<Integer>> result = genetic.stream()
+                .limit(4)
+                .collect(toList());
+        // Then
+        assertThat(result, equalTo(List.of(
+                newIteration(0, List.of(newSolution(1, 1)))
+                , newIteration(1, List.of(newSolution(2, 2)))
+                , newIteration(2, List.of(newSolution(3, 3)))
+                , newIteration(3, List.of(newSolution(4, 4)))
+        )));
     }
 }
