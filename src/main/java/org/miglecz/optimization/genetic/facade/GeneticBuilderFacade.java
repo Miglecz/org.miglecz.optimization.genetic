@@ -1,10 +1,14 @@
 package org.miglecz.optimization.genetic.facade;
 
+import static java.util.Collections.unmodifiableList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.miglecz.optimization.genetic.Genetic;
+import org.miglecz.optimization.genetic.MultiSelection;
 import org.miglecz.optimization.genetic.facade.operator.Factory;
 import org.miglecz.optimization.genetic.facade.operator.Fitness;
+import org.miglecz.optimization.genetic.facade.operator.ImmigrantSelection;
 import org.miglecz.optimization.genetic.facade.operator.InitialSelection;
 
 public class GeneticBuilderFacade<T> {
@@ -12,6 +16,7 @@ public class GeneticBuilderFacade<T> {
     private Integer population;
     private Factory<T> factory;
     private Fitness<T> fitness;
+    private Integer immigrant;
 
     private GeneticBuilderFacade(final Class<T> klass) {
         this.klass = klass;
@@ -42,14 +47,23 @@ public class GeneticBuilderFacade<T> {
         return this;
     }
 
+    public GeneticBuilderFacade<T> withImmigrant(final Integer immigrant) {
+        this.immigrant = immigrant;
+        return this;
+    }
+
     public Genetic<T> build() {
         notNull(population, "population");
         notNull(fitness, "fitness");
         notNull(factory, "factory");
+        final List<MultiSelection<T>> mainSelection = new ArrayList<>();
+        if (immigrant != null) {
+            mainSelection.add(new ImmigrantSelection<>(immigrant, fitness, factory));
+        }
         return new Genetic<>(
                 new InitialSelection<>(population, fitness, factory)
                 , List.of( //@formatter:off
-                        List.of()
+                        unmodifiableList(mainSelection)
                 ) //@formatter:on
         );
     }
