@@ -12,7 +12,7 @@ import org.miglecz.optimization.genetic.TestBase;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class InitSelectionTest extends TestBase {
+public class InitialSelectionTest extends TestBase {
     @Test(dataProvider = "data")
     void getShouldReturnInitialPopulation(
             final int population
@@ -21,7 +21,7 @@ public class InitSelectionTest extends TestBase {
             , final List<Solution<Integer>> expected
     ) {
         // Given
-        final InitSelection<Integer> subject = new InitSelection<>(population, fitness, factory);
+        final InitialSelection<Integer> subject = new InitialSelection<>(population, fitness, factory);
         // When
         final List<Solution<Integer>> result = subject.get();
         // Then

@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.miglecz.optimization.genetic.Genetic;
 import org.miglecz.optimization.genetic.facade.operator.Factory;
 import org.miglecz.optimization.genetic.facade.operator.Fitness;
-import org.miglecz.optimization.genetic.facade.operator.InitSelection;
+import org.miglecz.optimization.genetic.facade.operator.InitialSelection;
 
 public class GeneticBuilderFacade<T> {
     private final Class<T> klass;
@@ -47,7 +47,7 @@ public class GeneticBuilderFacade<T> {
         notNull(fitness, "fitness");
         notNull(factory, "factory");
         return new Genetic<>(
-                new InitSelection<>(population, fitness, factory)
+                new InitialSelection<>(population, fitness, factory)
                 , List.of( //@formatter:off
                         List.of()
                 ) //@formatter:on

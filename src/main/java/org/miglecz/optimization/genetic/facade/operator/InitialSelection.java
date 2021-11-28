@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.miglecz.optimization.Solution;
 
 @RequiredArgsConstructor
-public class InitSelection<T> implements org.miglecz.optimization.genetic.InitSelection<T> {
+public class InitialSelection<T> implements org.miglecz.optimization.genetic.InitSelection<T> {
     private final int population;
     private final Fitness<T> fitness;
     private final Factory<T> factory;
