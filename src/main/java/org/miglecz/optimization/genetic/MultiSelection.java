@@ -5,5 +5,5 @@ import java.util.function.UnaryOperator;
 import org.miglecz.optimization.Solution;
 
 public interface MultiSelection<T> extends UnaryOperator<List<Solution<T>>> {
-    //List<Solution<T>> apply(final List<Solution<T>> previousGeneration);
+    List<Solution<T>> apply(final List<Solution<T>> solutions);
 }

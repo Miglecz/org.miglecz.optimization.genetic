@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import org.testng.annotations.Test;
 
-public class GeneticBuilderTest {
+public class GeneticBuilderTest extends TestBase {
     @Test
     void buildShouldReturnGeneticInstance() {
         // Given
