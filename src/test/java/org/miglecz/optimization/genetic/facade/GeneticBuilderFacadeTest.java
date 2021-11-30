@@ -20,6 +20,19 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class GeneticBuilderFacadeTest extends TestBase {
+    @Test
+    void buildShouldNotFailWithDefaultRandom() {
+        // Given
+        // When
+        builder(Integer.class)
+                //.withRandom(null)
+                .withPopulation(0)
+                .withFitness(impl -> 0)
+                .withFactory(() -> 0)
+                .build();
+        // Then
+    }
+
     @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "random should not be null")
     void buildShouldFailWithRandomNull() {
         // Given
@@ -31,11 +44,33 @@ public class GeneticBuilderFacadeTest extends TestBase {
     }
 
     @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "population should not be null")
-    void buildShouldFailWithPopulationNull() {
+    void buildShouldFailWithDefaultPopulation() {
         // Given
         // When
         builder(Integer.class)
                 //.withPopulation(null)
+                .build();
+        // Then
+    }
+
+    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "population should not be null")
+    void buildShouldFailWithPopulationNull() {
+        // Given
+        // When
+        builder(Integer.class)
+                .withPopulation(null)
+                .build();
+        // Then
+    }
+
+    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "fitness should not be null")
+    void buildShouldFailWithDefaultFitness() {
+        // Given
+        // When
+        builder(Integer.class)
+                .withPopulation(0)
+                //.withFitness(null)
+                .withFactory(() -> 0)
                 .build();
         // Then
     }
@@ -46,7 +81,20 @@ public class GeneticBuilderFacadeTest extends TestBase {
         // When
         builder(Integer.class)
                 .withPopulation(0)
-                //.withFitness(null)
+                .withFitness(null)
+                .withFactory(() -> 0)
+                .build();
+        // Then
+    }
+
+    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "factory should not be null")
+    void buildShouldFailWithDefaultFactory() {
+        // Given
+        // When
+        builder(Integer.class)
+                .withPopulation(0)
+                .withFitness(impl -> 0)
+                //.withFactory(null)
                 .build();
         // Then
     }
@@ -58,7 +106,7 @@ public class GeneticBuilderFacadeTest extends TestBase {
         builder(Integer.class)
                 .withPopulation(0)
                 .withFitness(impl -> 0)
-                //.withFactory(null)
+                .withFactory(null)
                 .build();
         // Then
     }
