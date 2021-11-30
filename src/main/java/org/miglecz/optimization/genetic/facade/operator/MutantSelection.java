@@ -10,14 +10,14 @@ import org.miglecz.optimization.genetic.MultiSelection;
 
 @RequiredArgsConstructor
 public class MutantSelection<T> implements MultiSelection<T> {
-    private final int mutant; //TODO rename all in multiselections to limit
+    private final int limit;
     private final SingleSelection<T> selection;
     private final Mutation<T> mutation;
     private final Fitness<T> fitness;
 
     @Override
     public List<Solution<T>> apply(final List<Solution<T>> solutions) {
-        return IntStream.range(0, mutant)
+        return IntStream.range(0, limit)
                 .mapToObj(i -> selection.apply(solutions))
                 .map(Solution::getImpl)
                 .map(mutation)

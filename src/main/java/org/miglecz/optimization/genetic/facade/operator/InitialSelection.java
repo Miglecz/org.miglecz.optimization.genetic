@@ -9,13 +9,13 @@ import org.miglecz.optimization.Solution;
 
 @RequiredArgsConstructor
 public class InitialSelection<T> implements org.miglecz.optimization.genetic.InitSelection<T> {
-    private final int population;
+    private final int limit;
     private final Fitness<T> fitness;
     private final Factory<T> factory;
 
     @Override
     public List<Solution<T>> get() {
-        return IntStream.range(0, population)
+        return IntStream.range(0, limit)
                 .mapToObj(i -> factory.get())
                 .map(impl -> newSolution(fitness.applyAsDouble(impl), impl))
                 .collect(toUnmodifiableList());

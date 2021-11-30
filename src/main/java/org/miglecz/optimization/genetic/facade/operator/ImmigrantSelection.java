@@ -6,11 +6,11 @@ import org.miglecz.optimization.genetic.MultiSelection;
 
 public class ImmigrantSelection<T> extends InitialSelection<T> implements MultiSelection<T> {
     public ImmigrantSelection(
-            final int population
+            final int limit
             , final Fitness<T> fitness
             , final Factory<T> factory
     ) {
-        super(population, fitness, factory);
+        super(limit, fitness, factory);
     }
 
     @Override
