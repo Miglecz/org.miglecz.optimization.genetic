@@ -12,6 +12,7 @@ import org.miglecz.optimization.genetic.MultiSelection;
 @RequiredArgsConstructor
 public class EliteSelection<T> implements MultiSelection<T> {
     private final int limit;
+    private final Comparator<Solution<T>> comparator;
 
     @Override
     public List<Solution<T>> apply(final List<Solution<T>> solutions) {
@@ -21,7 +22,7 @@ public class EliteSelection<T> implements MultiSelection<T> {
             return unmodifiableList(solutions);
         } else {
             return solutions.stream()
-                    .sorted(Comparator.<Solution<T>>comparingDouble(Solution::getScore).reversed())
+                    .sorted(comparator)
                     .limit(limit)
                     .collect(toUnmodifiableList());
         }

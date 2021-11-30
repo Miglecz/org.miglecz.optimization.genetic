@@ -1,5 +1,6 @@
 package org.miglecz.optimization.genetic.facade.operator;
 
+import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.miglecz.optimization.Solution.newSolution;
@@ -13,25 +14,28 @@ import org.testng.annotations.Test;
 public class RandomSelectionTest extends TestBase {
     @DataProvider
     Object[][] data() {
-        final Random random = new Random(0);
         return new Object[][]{
-                new Object[]{0, List.of(), List.of(), null}
-                , new Object[]{0, List.of(newSolution(1, 1)), List.of(), null}
-                , new Object[]{1, List.of(), List.of(), random}
-                , new Object[]{1, List.of(newSolution(1, 1)), List.of(newSolution(1, 1)), random}
-                , new Object[]{2, List.of(), List.of(), null}
-                , new Object[]{2, List.of(newSolution(1, 1)), List.of(newSolution(1, 1), newSolution(1, 1)), random}
-                , new Object[]{1, List.of(newSolution(1, 1), newSolution(2, 2)), List.of(newSolution(2, 2)), random}
+                new Object[]{List.of(newSolution(1, 1)), newSolution(1, 1), new Random(0)}
+                , new Object[]{List.of(newSolution(1, 1), newSolution(2, 2)), newSolution(2, 2), new Random(0)}
         };
     }
 
     @Test(dataProvider = "data")
-    void applyShouldReturnRandomItems(final Integer limit, final List<Solution<Integer>> previous, final List<Solution<Integer>> expected, final Random random) {
+    void applyShouldReturnRandomItems(final List<Solution<Integer>> previous, final Solution<Integer> expected, final Random random) {
         // Given
-        final RandomSelection<Integer> subject = new RandomSelection<>(limit, random);
+        final RandomSelection<Integer> subject = new RandomSelection<>(random);
         // When
-        final List<Solution<Integer>> result = subject.apply(previous);
+        final Solution<Integer> result = subject.apply(previous);
         // Then
         assertThat(result, equalTo(expected));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "bound must be positive")
+    void applyShouldReturnRandomItems() {
+        // Given
+        final RandomSelection<Integer> subject = new RandomSelection<>(new Random());
+        // When
+        subject.apply(emptyList());
+        // Then
     }
 }

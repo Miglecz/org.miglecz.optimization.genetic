@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 import org.miglecz.optimization.Iteration;
 import org.miglecz.optimization.genetic.Genetic;
 import org.miglecz.optimization.genetic.TestBase;
+import org.miglecz.optimization.genetic.facade.operator.Crossover;
 import org.miglecz.optimization.genetic.facade.operator.Mutation;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -268,5 +269,44 @@ public class GeneticBuilderFacadeTest extends TestBase {
                 .withMutant(0, null)
                 .build();
         // Then
+    }
+
+    @DataProvider
+    Object[][] offspringData() {
+        return new Object[][]{
+                new Object[]{0, List.of(), 0, (Crossover<Integer>) (a, b) -> null, 1, List.of(newIteration(0, List.of()))}
+                , new Object[]{0, List.of(), 0, (Crossover<Integer>) (a, b) -> a * b, 2, List.of(newIteration(0, List.of()), newIteration(1, List.of()))}
+                , new Object[]{2, List.of(2, 3), 20, (Crossover<Integer>) Integer::sum, 3, List.of( //@formatter:off
+                        newIteration(0, List.of(newSolution(1, 2), newSolution(2, 3)))
+                        , newIteration(1, List.of(newSolution(5, 6), newSolution(5, 6)))
+                        , newIteration(2, List.of(newSolution(11, 12), newSolution(11, 12)))
+                )} //@formatter:on
+        };
+    }
+
+    @Test(dataProvider = "offspringData")
+    void streamShouldReturnOffsprings(
+            final Integer population
+            , final List<Integer> initials
+            , final Integer offspring
+            , final Crossover<Integer> crossover
+            , final Integer limit
+            , final List<Iteration<Integer>> expected
+    ) {
+        // Given
+        final AtomicInteger index = new AtomicInteger(0);
+        final Genetic<Integer> genetic = builder(Integer.class)
+                .withPopulation(population)
+                .withFitness(impl -> impl - 1)
+                .withFactory(() -> initials.get(index.getAndIncrement()))
+                .withRandom(new Random(1))
+                .withOffspring(offspring, crossover)
+                .build();
+        // When
+        final List<Iteration<Integer>> result = genetic.stream()
+                .limit(limit)
+                .collect(toList());
+        // Then
+        assertThat(result, equalTo(expected));
     }
 }

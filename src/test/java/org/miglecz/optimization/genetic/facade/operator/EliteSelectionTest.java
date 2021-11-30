@@ -34,7 +34,7 @@ public class EliteSelectionTest extends TestBase {
             , final List<Solution<Integer>> expected
     ) {
         // Given
-        final EliteSelection<Integer> subject = new EliteSelection<>(limit);
+        final EliteSelection<Integer> subject = new EliteSelection<>(limit, comparator(Integer.class));
         // When
         final List<Solution<Integer>> result = subject.apply(previous);
         // Then
