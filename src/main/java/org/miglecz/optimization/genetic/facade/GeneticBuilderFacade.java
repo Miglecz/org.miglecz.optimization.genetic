@@ -1,5 +1,6 @@
 package org.miglecz.optimization.genetic.facade;
 
+import static java.lang.String.format;
 import static java.util.Collections.unmodifiableList;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -45,7 +46,7 @@ public class GeneticBuilderFacade<T> {
 
     private static void notNull(Object obj, String message) {
         if (Objects.isNull(obj)) {
-            throw new NullPointerException(message + " should not be null");
+            throw new NullPointerException(format("%s should not be null", message));
         }
     }
 
