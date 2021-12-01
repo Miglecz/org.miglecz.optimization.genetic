@@ -41,6 +41,7 @@ public class UsabilityTest extends TestBase {
         final int square = 1024;
         final Random random = new Random(1);
         final Optimization<Integer> optimization = builder(Integer.class)
+                .withRandom(random)
                 .withPopulation(1)
                 .withFactory(() -> 0)
                 .withMutant(20, impl -> impl + (random.nextBoolean() ? 1 : -1))
@@ -49,21 +50,22 @@ public class UsabilityTest extends TestBase {
                 .build();
         // When
         final List<Integer> result = optimization.stream()
-                .limit(50)
+                .limit(33)
                 .map(Iteration::getSolutions)
                 .flatMap(Collection::stream)
                 .map(Solution::getImpl)
                 .collect(toList());
         // Then
-        assertThat(result, equalTo(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32)));
+        assertThat(result, equalTo(List.of(0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24, -25, -26, -27, -28, -29, -30, -31, -32)));
     }
 
     @Test
     void geneticShouldBeAbleToQuickEvolveToSquareRoot() {
         // Given
         final int square = 1024;
-        final Random random = new Random(1);
+        final Random random = new Random(0);
         final Optimization<Integer> optimization = builder(Integer.class)
+                .withRandom(random)
                 .withPopulation(1)
                 .withFactory(() -> random.nextInt(10000))
                 .withOffspring(20, (a, b) -> (a + b) / 2)
@@ -74,12 +76,12 @@ public class UsabilityTest extends TestBase {
                 .build();
         // When
         final List<Integer> result = optimization.stream()
-                .limit(10)
+                .limit(6)
                 .map(Iteration::getSolutions)
                 .flatMap(Collection::stream)
                 .map(Solution::getImpl)
-                .collect(toList()); //TODO stop when reached or when not converging anymore
+                .collect(toList());
         // Then
-        assertThat(result, equalTo(List.of(8985, 153, 103, 54, 32, 32, 32, 32, 32, 32)));
+        assertThat(result, equalTo(List.of(1360, 877, 151, 78, 41, 34)));
     }
 }

@@ -24,7 +24,7 @@ import org.miglecz.optimization.genetic.facade.operator.TournamentSelection;
 
 public class GeneticBuilderFacade<T> {
     private final Class<T> klass;
-    private Random random = new Random();
+    private Random random = new Random(1);
     private Integer population;
     private Factory<T> factory;
     private Fitness<T> fitness;
