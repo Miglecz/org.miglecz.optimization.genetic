@@ -1,17 +1,18 @@
 package org.miglecz.optimization.genetic.facade;
 
+import static java.lang.Math.abs;
 import static java.util.List.of;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.miglecz.optimization.Collect.toBestSolution;
+import static org.miglecz.optimization.TakeWhile.progressingIteration;
 import static org.miglecz.optimization.genetic.facade.GeneticBuilderFacade.builder;
 import java.util.Collection;
 import java.util.List;
 import org.miglecz.optimization.Iteration;
 import org.miglecz.optimization.Optimization;
 import org.miglecz.optimization.Solution;
-import org.miglecz.optimization.TakeWhile;
 import org.miglecz.optimization.genetic.TestBase;
 import org.testng.annotations.Test;
 
@@ -45,7 +46,7 @@ public class UsabilityTest extends TestBase {
                 .withPopulation(1)
                 .withFactory(() -> 0)
                 .withMutant(20, impl -> impl + (random.nextBoolean() ? 1 : -1))
-                .withFitness(impl -> -Math.abs(square - impl * impl))
+                .withFitness(impl -> -abs(square - impl * impl))
                 .withElite(1)
                 .build();
         // When
@@ -70,7 +71,7 @@ public class UsabilityTest extends TestBase {
                 .withOffspring(20, (a, b) -> (a + b) / 2)
                 .withMutant(20, impl -> impl + random.nextInt(100) - 50)
                 .withImmigrant(20)
-                .withFitness(impl -> -Math.abs(square - impl * impl))
+                .withFitness(impl -> -abs(square - impl * impl))
                 .withElite(1)
                 .build();
         // When
@@ -85,22 +86,22 @@ public class UsabilityTest extends TestBase {
     }
 
     @Test
-    void geneticShouldBeAbleToCalculateSquareRoot() {
+    void geneticOptimizationShouldBeAbleToCalculateSquareRoot() {
         // Given
         final int square = 1024;
-        final Optimization<Integer> optimization = builder(Integer.class)
+        final Optimization<Integer> optimization = GeneticBuilderFacade.builder(Integer.class)
                 .withRandom(random)
-                .withPopulation(1)
                 .withFactory(() -> random.nextInt(10000))
-                .withOffspring(20, (a, b) -> (a + b) / 2)
-                .withMutant(20, impl -> impl + random.nextInt(100) - 50)
-                .withImmigrant(20)
-                .withFitness(impl -> -Math.abs(square - impl * impl))
+                .withFitness(i -> -abs(square - i * i))
+                .withPopulation(1)
                 .withElite(1)
+                .withMutant(20, i -> i + random.nextInt(100) - 50)
+                .withOffspring(20, (i, j) -> (i + j) / 2)
+                .withImmigrant(20)
                 .build();
         // When
         final Integer result = optimization.stream()
-                .takeWhile(TakeWhile.progressingIteration(10))
+                .takeWhile(progressingIteration(10))
                 .collect(toBestSolution())
                 .getImpl();
         // Then
