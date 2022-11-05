@@ -51,28 +51,6 @@ public class GeneticOptimizationBuilderTest extends TestBase {
         // Then
     }
 
-    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "population should not be null")
-    void buildShouldFailWithPopulationNull() {
-        // Given
-        // When
-        builder(Integer.class)
-            .withPopulation(null)
-            .build();
-        // Then
-    }
-
-    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "fitness should not be null")
-    void buildShouldFailWithDefaultFitness() {
-        // Given
-        // When
-        builder(Integer.class)
-            .withPopulation(0)
-            //.withFitness(null)
-            .withFactory(() -> 0)
-            .build();
-        // Then
-    }
-
     @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "fitness should not be null")
     void buildShouldFailWithFitnessNull() {
         // Given
@@ -289,19 +267,6 @@ public class GeneticOptimizationBuilderTest extends TestBase {
             .collect(toList());
         // Then
         assertThat(result, equalTo(expected));
-    }
-
-    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "mutant should not be null")
-    void builderShouldFailWhenMutantNull() {
-        // Given
-        // When
-        builder(Integer.class)
-            .withPopulation(0)
-            .withFitness(impl -> 0)
-            .withFactory(() -> 0)
-            .withMutant(null, i -> i)
-            .build();
-        // Then
     }
 
     @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "mutation should not be null")

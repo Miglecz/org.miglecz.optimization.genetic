@@ -54,7 +54,7 @@ public class GeneticOptimizationBuilder<T> {
         return this;
     }
 
-    public GeneticOptimizationBuilder<T> withPopulation(final Integer population) {
+    public GeneticOptimizationBuilder<T> withPopulation(final int population) {
         this.population = population;
         return this;
     }
@@ -69,24 +69,24 @@ public class GeneticOptimizationBuilder<T> {
         return this;
     }
 
-    public GeneticOptimizationBuilder<T> withElite(final Integer elite) {
+    public GeneticOptimizationBuilder<T> withElite(final int elite) {
         this.elite = elite;
         return this;
     }
 
-    public GeneticOptimizationBuilder<T> withOffspring(final Integer offspring, final Crossover<T> crossover) { //TODO change Integer to int everywhere
+    public GeneticOptimizationBuilder<T> withOffspring(final int offspring, final Crossover<T> crossover) {
         this.offspring = offspring;
         this.crossover = crossover;
         return this;
     }
 
-    public GeneticOptimizationBuilder<T> withMutant(final Integer mutant, final Mutation<T> mutation) {
+    public GeneticOptimizationBuilder<T> withMutant(final int mutant, final Mutation<T> mutation) {
         this.mutant = mutant;
         this.mutation = mutation;
         return this;
     }
 
-    public GeneticOptimizationBuilder<T> withImmigrant(final Integer immigrant) {
+    public GeneticOptimizationBuilder<T> withImmigrant(final int immigrant) {
         this.immigrant = immigrant;
         return this;
     }
