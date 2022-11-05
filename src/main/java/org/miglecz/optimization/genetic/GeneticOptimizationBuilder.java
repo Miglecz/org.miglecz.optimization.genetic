@@ -92,7 +92,7 @@ public class GeneticOptimizationBuilder<T> {
     }
 
     public Optimization<T> build() {
-        notNull(random, "random"); //TODO Objects.requireNonNull(random);
+        notNull(random, "random");
         notNull(population, "population");
         notNull(fitness, "fitness");
         notNull(factory, "factory");
