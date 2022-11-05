@@ -3,7 +3,7 @@ package org.miglecz.optimization.genetic;
 import java.util.List;
 import java.util.Objects;
 
-public class GeneticBuilder<T> {
+public class GeneticBuilder<T> { //TODO rename to GeneticOptimizationBuilder?
     private final Class<T> klass;
     private InitSelection<T> initialize;
     private List<List<MultiSelection<T>>> selectionsList;
@@ -26,7 +26,7 @@ public class GeneticBuilder<T> {
         return this;
     }
 
-    public Genetic<T> build() {
+    public Genetic<T> build() { //TODO return Optimization
         if (Objects.isNull(initialize)) {
             throw new NullPointerException();
         }

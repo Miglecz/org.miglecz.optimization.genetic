@@ -92,7 +92,7 @@ public class GeneticBuilderFacade<T> {
         return this;
     }
 
-    public Genetic<T> build() {
+    public Genetic<T> build() { //TODO return Optimization
         notNull(random, "random");
         notNull(population, "population");
         notNull(fitness, "fitness");

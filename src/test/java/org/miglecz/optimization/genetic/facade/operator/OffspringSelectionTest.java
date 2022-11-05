@@ -22,6 +22,7 @@ import org.testng.annotations.Test;
 public class OffspringSelectionTest extends TestBase {
     @Test
     void applyShouldDoNothingOnEmpty() {
+        // Given
         final SingleSelection<Integer> selection = mock(SingleSelection.class);
         final Crossover<Integer> crossover = mock(Crossover.class);
         final Fitness<Integer> fitness = mock(Fitness.class);
@@ -35,6 +36,7 @@ public class OffspringSelectionTest extends TestBase {
 
     @Test
     void applyShouldNotCallCrossoverOnSingleSolution() {
+        // Given
         final int limit = 10;
         final SingleSelection<Integer> selection = mock(SingleSelection.class);
         final Crossover<Integer> crossover = mock(Crossover.class);

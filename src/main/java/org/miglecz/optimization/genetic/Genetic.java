@@ -14,7 +14,7 @@ import org.miglecz.optimization.genetic.exception.InitializationException;
 import org.miglecz.optimization.genetic.exception.SelectionException;
 
 @RequiredArgsConstructor
-public class Genetic<T> implements Optimization<T> {
+public class Genetic<T> implements Optimization<T> { //TODO rename to GeneticOptimizationImpl
     private final InitSelection<T> initialize;
     private final List<List<MultiSelection<T>>> selectionsList;
 
