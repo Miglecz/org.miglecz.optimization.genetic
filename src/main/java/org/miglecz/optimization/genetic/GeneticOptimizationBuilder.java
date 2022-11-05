@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Stream;
 import org.miglecz.optimization.Optimization;
 import org.miglecz.optimization.Solution;
 import org.miglecz.optimization.genetic.operator.Crossover;
@@ -93,20 +94,23 @@ public class GeneticOptimizationBuilder<T> {
 
     public Optimization<T> build() {
         notNull(random, "random");
-        notNull(population, "population");
         notNull(fitness, "fitness");
         notNull(factory, "factory");
         notNull(comparator, "comparator");
+        if (population == null) {
+            population = Stream.of(elite, offspring, mutant, immigrant)
+                .filter(Objects::nonNull)
+                .reduce(0, Integer::sum);
+        }
         final List<MultiSelection<T>> mainSelection = new ArrayList<>();
         if (elite != null) {
             mainSelection.add(new EliteSelection<>(elite, comparator));
         }
-        if (offspring != null || crossover != null) {
-            notNull(offspring, "offspring");
+        if (offspring != null) {
             notNull(crossover, "crossover");
             mainSelection.add(new OffspringSelection<>(offspring, new TournamentSelection<>(random, comparator), crossover, fitness));
         }
-        if (mutant != null || mutation != null) {
+        if (mutant != null) {
             notNull(mutant, "mutant");
             notNull(mutation, "mutation");
             mainSelection.add(new MutantSelection<>(mutant, new RandomSelection<>(random), mutation, fitness));

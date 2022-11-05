@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 import org.miglecz.optimization.Iteration;
 import org.miglecz.optimization.genetic.operator.Crossover;
 import org.miglecz.optimization.genetic.operator.Mutation;
+import org.miglecz.optimization.stream.Collectors;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -41,14 +42,53 @@ public class GeneticOptimizationBuilderTest extends TestBase {
         // Then
     }
 
-    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "population should not be null")
-    void buildShouldFailWithDefaultPopulation() {
+    @DataProvider
+    Object[][] population() {
+        return new Object[][]{
+            new Object[]{null, null, null, null, null, 0}
+            , new Object[]{null, null, 3, 4, 5, 12}
+            , new Object[]{null, 2, null, 4, 5, 11}
+            , new Object[]{null, 2, 3, null, 5, 10}
+            , new Object[]{null, 2, 3, 4, null, 9}
+            , new Object[]{null, 2, 3, 4, 5, 14}
+            , new Object[]{1, 2, 3, 4, 5, 1}
+        };
+    }
+
+    @Test(dataProvider = "population")
+    void buildShouldFailWithDefaultPopulation(Integer population, Integer elite, Integer offspring, Integer mutant, Integer immigrant, Integer expected) {
         // Given
+        var builder = builder(Integer.class);
+        if (population != null) {
+            builder = builder.withPopulation(population);
+        }
+        if (elite != null) {
+            builder = builder.withElite(elite);
+        }
+        if (offspring != null) {
+            builder = builder.withOffspring(offspring, (i, j) -> i);
+        }
+        if (mutant != null) {
+            builder = builder.withMutant(mutant, impl -> impl);
+        }
+        if (immigrant != null) {
+            builder = builder.withImmigrant(immigrant);
+        }
         // When
-        builder(Integer.class)
-            //.withPopulation(null)
-            .build();
+        final var result = builder
+            .withFitness(impl -> 1)
+            .withFactory(() -> 2)
+            .build()
+            .stream()
+            .peek(System.out::println)
+            .skip(1)
+            .limit(2)
+            .collect(Collectors.toBestIteration())
+            .get()
+            .getSolutions()
+            .size();
         // Then
+        assertThat(result, equalTo(expected));
     }
 
     @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "fitness should not be null")
