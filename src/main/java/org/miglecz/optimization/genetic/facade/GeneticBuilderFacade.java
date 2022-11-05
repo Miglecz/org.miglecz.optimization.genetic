@@ -44,7 +44,7 @@ public class GeneticBuilderFacade<T> {
         return new GeneticBuilderFacade<>(klass);
     }
 
-    private static void notNull(Object obj, String message) {
+    private static void notNull(final Object obj, final String message) {
         if (Objects.isNull(obj)) {
             throw new NullPointerException(format("%s should not be null", message));
         }

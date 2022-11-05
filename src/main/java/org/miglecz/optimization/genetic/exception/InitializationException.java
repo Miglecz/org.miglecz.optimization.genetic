@@ -7,7 +7,7 @@ import org.miglecz.optimization.genetic.InitSelection;
 public class InitializationException extends GeneticException {
     private final InitSelection<?> init;
 
-    public InitializationException(InitSelection<?> initialize, Exception e) {
+    public InitializationException(final InitSelection<?> initialize, final Exception e) {
         super(e);
         this.init = initialize;
     }
