@@ -1,16 +1,18 @@
-package org.miglecz.optimization;
+package org.miglecz.optimization.stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.miglecz.optimization.Collect.toBestIteration;
-import static org.miglecz.optimization.Collect.toBestSolution;
 import static org.miglecz.optimization.Iteration.newIteration;
 import static org.miglecz.optimization.Solution.newSolution;
+import static org.miglecz.optimization.stream.Collectors.toBestIteration;
+import static org.miglecz.optimization.stream.Collectors.toBestSolution;
 import java.util.List;
+import org.miglecz.optimization.Iteration;
+import org.miglecz.optimization.Solution;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class CollectTest {
+public class CollectorsTest {
     @DataProvider
     Object[][] toBestIterationData() {
         return new Object[][]{

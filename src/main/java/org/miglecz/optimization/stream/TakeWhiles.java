@@ -1,12 +1,15 @@
-package org.miglecz.optimization;
+package org.miglecz.optimization.stream;
 
 import java.util.Optional;
 import java.util.function.Predicate;
+import org.miglecz.optimization.Iteration;
+import org.miglecz.optimization.Optimization;
+import org.miglecz.optimization.Solution;
 
 /**
  * Helper class for {@link java.util.stream.Stream#takeWhile(Predicate)} in {@link Optimization#stream()}
  */
-public class TakeWhile {
+public class TakeWhiles {
     /**
      * Take while the iterations delta score is not less than the given threshold
      *

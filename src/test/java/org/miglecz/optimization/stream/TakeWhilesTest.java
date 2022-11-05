@@ -1,4 +1,4 @@
-package org.miglecz.optimization;
+package org.miglecz.optimization.stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -6,10 +6,12 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.miglecz.optimization.Iteration.newIteration;
 import static org.miglecz.optimization.Solution.newSolution;
 import java.util.List;
+import org.miglecz.optimization.Iteration;
+import org.miglecz.optimization.Solution;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class TakeWhileTest {
+public class TakeWhilesTest {
     @DataProvider
     Object[][] data() {
         return new Object[][]{
@@ -71,7 +73,7 @@ public class TakeWhileTest {
         // Given
         // When
         final List<Iteration<Integer>> result = iterations.stream()
-                .takeWhile(TakeWhile.aboveFitnessThreshold(0, generations))
+                .takeWhile(TakeWhiles.aboveFitnessThreshold(0, generations))
                 .collect(toList());
         // Then
         assertThat(result, equalTo(expected));
