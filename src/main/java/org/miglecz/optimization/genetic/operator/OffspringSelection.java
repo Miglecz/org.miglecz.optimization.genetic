@@ -1,4 +1,4 @@
-package org.miglecz.optimization.genetic.facade.operator;
+package org.miglecz.optimization.genetic.operator;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toUnmodifiableList;
@@ -22,14 +22,14 @@ public class OffspringSelection<T> implements MultiSelection<T> {
             return emptyList();
         } else if (solutions.size() == 1) {
             return IntStream.range(0, limit)
-                    .mapToObj(i -> solutions.get(0))
-                    .collect(toUnmodifiableList());
+                .mapToObj(i -> solutions.get(0))
+                .collect(toUnmodifiableList());
         }
         return IntStream.range(0, limit)
-                .mapToObj(i -> List.of(selection.apply(solutions), selection.apply(solutions)))
-                .map(list -> list.stream().map(Solution::getImpl).collect(toUnmodifiableList()))
-                .map(list -> crossover.apply(list.get(0), list.get(1)))
-                .map(impl -> newSolution(fitness.applyAsDouble(impl), impl))
-                .collect(toUnmodifiableList());
+            .mapToObj(i -> List.of(selection.apply(solutions), selection.apply(solutions)))
+            .map(list -> list.stream().map(Solution::getImpl).collect(toUnmodifiableList()))
+            .map(list -> crossover.apply(list.get(0), list.get(1)))
+            .map(impl -> newSolution(fitness.applyAsDouble(impl), impl))
+            .collect(toUnmodifiableList());
     }
 }

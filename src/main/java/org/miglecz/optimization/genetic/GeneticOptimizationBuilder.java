@@ -1,4 +1,4 @@
-package org.miglecz.optimization.genetic.facade;
+package org.miglecz.optimization.genetic;
 
 import static java.lang.String.format;
 import static java.util.Collections.unmodifiableList;
@@ -7,22 +7,21 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import org.miglecz.optimization.Optimization;
 import org.miglecz.optimization.Solution;
-import org.miglecz.optimization.genetic.Genetic;
-import org.miglecz.optimization.genetic.MultiSelection;
-import org.miglecz.optimization.genetic.facade.operator.Crossover;
-import org.miglecz.optimization.genetic.facade.operator.EliteSelection;
-import org.miglecz.optimization.genetic.facade.operator.Factory;
-import org.miglecz.optimization.genetic.facade.operator.Fitness;
-import org.miglecz.optimization.genetic.facade.operator.ImmigrantSelection;
-import org.miglecz.optimization.genetic.facade.operator.InitialSelection;
-import org.miglecz.optimization.genetic.facade.operator.MutantSelection;
-import org.miglecz.optimization.genetic.facade.operator.Mutation;
-import org.miglecz.optimization.genetic.facade.operator.OffspringSelection;
-import org.miglecz.optimization.genetic.facade.operator.RandomSelection;
-import org.miglecz.optimization.genetic.facade.operator.TournamentSelection;
+import org.miglecz.optimization.genetic.operator.Crossover;
+import org.miglecz.optimization.genetic.operator.EliteSelection;
+import org.miglecz.optimization.genetic.operator.Factory;
+import org.miglecz.optimization.genetic.operator.Fitness;
+import org.miglecz.optimization.genetic.operator.ImmigrantSelection;
+import org.miglecz.optimization.genetic.operator.InitialSelection;
+import org.miglecz.optimization.genetic.operator.MutantSelection;
+import org.miglecz.optimization.genetic.operator.Mutation;
+import org.miglecz.optimization.genetic.operator.OffspringSelection;
+import org.miglecz.optimization.genetic.operator.RandomSelection;
+import org.miglecz.optimization.genetic.operator.TournamentSelection;
 
-public class GeneticBuilderFacade<T> {
+public class GeneticOptimizationBuilder<T> {
     private final Class<T> klass;
     private Random random = new Random(1);
     private Integer population;
@@ -36,12 +35,12 @@ public class GeneticBuilderFacade<T> {
     private Integer immigrant;
     private Crossover<T> crossover;
 
-    private GeneticBuilderFacade(final Class<T> klass) {
+    private GeneticOptimizationBuilder(final Class<T> klass) {
         this.klass = klass;
     }
 
-    public static <T> GeneticBuilderFacade<T> builder(final Class<T> klass) {
-        return new GeneticBuilderFacade<>(klass);
+    public static <T> GeneticOptimizationBuilder<T> builder(final Class<T> klass) {
+        return new GeneticOptimizationBuilder<>(klass);
     }
 
     private static void notNull(final Object obj, final String message) {
@@ -50,50 +49,50 @@ public class GeneticBuilderFacade<T> {
         }
     }
 
-    public GeneticBuilderFacade<T> withRandom(final Random random) {
+    public GeneticOptimizationBuilder<T> withRandom(final Random random) {
         this.random = random;
         return this;
     }
 
-    public GeneticBuilderFacade<T> withPopulation(final Integer population) {
+    public GeneticOptimizationBuilder<T> withPopulation(final Integer population) {
         this.population = population;
         return this;
     }
 
-    public GeneticBuilderFacade<T> withFactory(final Factory<T> factory) {
+    public GeneticOptimizationBuilder<T> withFactory(final Factory<T> factory) {
         this.factory = factory;
         return this;
     }
 
-    public GeneticBuilderFacade<T> withFitness(final Fitness<T> fitness) {
+    public GeneticOptimizationBuilder<T> withFitness(final Fitness<T> fitness) {
         this.fitness = fitness;
         return this;
     }
 
-    public GeneticBuilderFacade<T> withElite(final Integer elite) {
+    public GeneticOptimizationBuilder<T> withElite(final Integer elite) {
         this.elite = elite;
         return this;
     }
 
-    public GeneticBuilderFacade<T> withOffspring(final Integer offspring, final Crossover<T> crossover) { //TODO change Integer to int everywhere
+    public GeneticOptimizationBuilder<T> withOffspring(final Integer offspring, final Crossover<T> crossover) { //TODO change Integer to int everywhere
         this.offspring = offspring;
         this.crossover = crossover;
         return this;
     }
 
-    public GeneticBuilderFacade<T> withMutant(final Integer mutant, final Mutation<T> mutation) {
+    public GeneticOptimizationBuilder<T> withMutant(final Integer mutant, final Mutation<T> mutation) {
         this.mutant = mutant;
         this.mutation = mutation;
         return this;
     }
 
-    public GeneticBuilderFacade<T> withImmigrant(final Integer immigrant) {
+    public GeneticOptimizationBuilder<T> withImmigrant(final Integer immigrant) {
         this.immigrant = immigrant;
         return this;
     }
 
-    public Genetic<T> build() { //TODO return Optimization
-        notNull(random, "random");
+    public Optimization<T> build() {
+        notNull(random, "random"); //TODO Objects.requireNonNull(random);
         notNull(population, "population");
         notNull(fitness, "fitness");
         notNull(factory, "factory");
@@ -115,12 +114,12 @@ public class GeneticBuilderFacade<T> {
         if (immigrant != null) {
             mainSelection.add(new ImmigrantSelection<>(immigrant, fitness, factory));
         }
-        return new Genetic<>(
-                new InitialSelection<>(population, fitness, factory)
-                , List.of( //@formatter:off
-                        unmodifiableList(mainSelection)
-                        , List.of(new EliteSelection<>(population, comparator))
-                ) //@formatter:on
+        return new GeneticOptimization<>(
+            new InitialSelection<>(population, fitness, factory)
+            , List.of( //@formatter:off
+                unmodifiableList(mainSelection)
+                , List.of(new EliteSelection<>(population, comparator))
+            ) //@formatter:on
         );
     }
 }

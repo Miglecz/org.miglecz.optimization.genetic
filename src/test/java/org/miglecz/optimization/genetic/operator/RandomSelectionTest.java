@@ -1,4 +1,4 @@
-package org.miglecz.optimization.genetic.facade.operator;
+package org.miglecz.optimization.genetic.operator;
 
 import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,8 +15,8 @@ public class RandomSelectionTest extends TestBase {
     @DataProvider
     Object[][] data() {
         return new Object[][]{
-                new Object[]{List.of(newSolution(1, 1)), newSolution(1, 1), new Random(0)}
-                , new Object[]{List.of(newSolution(1, 1), newSolution(2, 2)), newSolution(2, 2), new Random(0)}
+            new Object[]{List.of(newSolution(1, 1)), newSolution(1, 1), new Random(0)}
+            , new Object[]{List.of(newSolution(1, 1), newSolution(2, 2)), newSolution(2, 2), new Random(0)}
         };
     }
 

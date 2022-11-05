@@ -8,14 +8,14 @@ import java.util.stream.Collector;
 import org.miglecz.optimization.Iteration;
 import org.miglecz.optimization.Optimization;
 import org.miglecz.optimization.Solution;
-import org.miglecz.optimization.genetic.facade.GeneticBuilderFacade;
+import org.miglecz.optimization.genetic.GeneticOptimizationBuilder;
 
 /**
  * Helper class for {@link java.util.stream.Stream#collect(Collector)} in {@link Optimization#stream()}
  */
 public class Collectors {
     /**
-     * TODO replace maxBy and MIN_VALUE to something related to {@link GeneticBuilderFacade#comparator} in {@link Iteration} object
+     * TODO replace maxBy and MIN_VALUE to something related to {@link GeneticOptimizationBuilder#comparator} in {@link Iteration} object
      *
      * @param <T> type of implementation
      * @return collector for getting the iteration holding the best score

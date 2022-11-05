@@ -1,4 +1,4 @@
-package org.miglecz.optimization.genetic.facade.operator;
+package org.miglecz.optimization.genetic.operator;
 
 import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,11 +15,11 @@ public class TournamentSelectionTest extends TestBase {
     @DataProvider
     Object[][] data() {
         return new Object[][]{
-                new Object[]{List.of(newSolution(0, 0)), newSolution(0, 0)}
-                , new Object[]{List.of(newSolution(0, 0), newSolution(1, 1)), newSolution(1, 1)}
-                , new Object[]{List.of(newSolution(0, 0), newSolution(0, 1)), newSolution(0, 1)}
-                , new Object[]{List.of(newSolution(1, 1), newSolution(0, 0)), newSolution(1, 1)}
-                , new Object[]{List.of(newSolution(0, 0), newSolution(1, 1), newSolution(2, 2), newSolution(3, 3)), newSolution(2, 2)}
+            new Object[]{List.of(newSolution(0, 0)), newSolution(0, 0)}
+            , new Object[]{List.of(newSolution(0, 0), newSolution(1, 1)), newSolution(1, 1)}
+            , new Object[]{List.of(newSolution(0, 0), newSolution(0, 1)), newSolution(0, 1)}
+            , new Object[]{List.of(newSolution(1, 1), newSolution(0, 0)), newSolution(1, 1)}
+            , new Object[]{List.of(newSolution(0, 0), newSolution(1, 1), newSolution(2, 2), newSolution(3, 3)), newSolution(2, 2)}
         };
     }
 

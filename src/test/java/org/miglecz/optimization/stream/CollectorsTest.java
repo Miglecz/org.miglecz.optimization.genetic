@@ -16,16 +16,16 @@ public class CollectorsTest {
     @DataProvider
     Object[][] toBestIterationData() {
         return new Object[][]{
-                new Object[]{List.of(), null},
-                new Object[]{List.of(newIteration(0, List.of())), newIteration(0, List.of())},
-                new Object[]{List.of(
-                        newIteration(0, List.of())
-                        , newIteration(1, List.of(newSolution(7, 0)))
-                        , newIteration(2, List.of(newSolution(7, 1), newSolution(8, 2)))
-                        , newIteration(3, List.of())
-                ),
-                        newIteration(2, List.of(newSolution(7, 1), newSolution(8, 2)))
-                }
+            new Object[]{List.of(), null},
+            new Object[]{List.of(newIteration(0, List.of())), newIteration(0, List.of())},
+            new Object[]{List.of(
+                newIteration(0, List.of())
+                , newIteration(1, List.of(newSolution(7, 0)))
+                , newIteration(2, List.of(newSolution(7, 1), newSolution(8, 2)))
+                , newIteration(3, List.of())
+            ),
+                newIteration(2, List.of(newSolution(7, 1), newSolution(8, 2)))
+            }
         };
     }
 
@@ -34,8 +34,8 @@ public class CollectorsTest {
         // Given
         // When
         final Iteration<Integer> result = iterations.stream()
-                .collect(toBestIteration())
-                .orElse(null);
+            .collect(toBestIteration())
+            .orElse(null);
         // Then
         assertThat(result, equalTo(expected));
     }
@@ -43,14 +43,14 @@ public class CollectorsTest {
     @DataProvider
     Object[][] bestSolutionData() {
         return new Object[][]{
-                new Object[]{List.of(), null},
-                new Object[]{List.of(newIteration(0, List.of())), null},
-                new Object[]{List.of(
-                        newIteration(0, List.of())
-                        , newIteration(1, List.of(newSolution(7, 0)))
-                        , newIteration(2, List.of(newSolution(7, 1), newSolution(8, 2)))
-                        , newIteration(3, List.of())
-                ), newSolution(8, 2)}
+            new Object[]{List.of(), null},
+            new Object[]{List.of(newIteration(0, List.of())), null},
+            new Object[]{List.of(
+                newIteration(0, List.of())
+                , newIteration(1, List.of(newSolution(7, 0)))
+                , newIteration(2, List.of(newSolution(7, 1), newSolution(8, 2)))
+                , newIteration(3, List.of())
+            ), newSolution(8, 2)}
         };
     }
 
@@ -59,7 +59,7 @@ public class CollectorsTest {
         // Given
         // When
         final Solution<Integer> result = iterations.stream()
-                .collect(toBestSolution());
+            .collect(toBestSolution());
         // Then
         assertThat(result, equalTo(expected));
     }

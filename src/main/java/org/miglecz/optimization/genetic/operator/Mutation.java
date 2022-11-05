@@ -1,4 +1,4 @@
-package org.miglecz.optimization.genetic.facade.operator;
+package org.miglecz.optimization.genetic.operator;
 
 import java.util.function.UnaryOperator;
 

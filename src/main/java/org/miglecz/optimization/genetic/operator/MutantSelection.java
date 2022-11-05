@@ -1,4 +1,4 @@
-package org.miglecz.optimization.genetic.facade.operator;
+package org.miglecz.optimization.genetic.operator;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
 import static org.miglecz.optimization.Solution.newSolution;
@@ -18,10 +18,10 @@ public class MutantSelection<T> implements MultiSelection<T> {
     @Override
     public List<Solution<T>> apply(final List<Solution<T>> solutions) {
         return IntStream.range(0, limit)
-                .mapToObj(i -> selection.apply(solutions))
-                .map(Solution::getImpl)
-                .map(mutation)
-                .map(impl -> newSolution(fitness.applyAsDouble(impl), impl))
-                .collect(toUnmodifiableList());
+            .mapToObj(i -> selection.apply(solutions))
+            .map(Solution::getImpl)
+            .map(mutation)
+            .map(impl -> newSolution(fitness.applyAsDouble(impl), impl))
+            .collect(toUnmodifiableList());
     }
 }

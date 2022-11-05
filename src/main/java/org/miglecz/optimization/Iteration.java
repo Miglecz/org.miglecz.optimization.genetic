@@ -27,7 +27,7 @@ public class Iteration<T> {
      *
      * @param index     index of iteration
      * @param solutions list of solutions
-     * @param <T> type of implementation
+     * @param <T>       type of implementation
      * @return iteration holding input @params
      */
     public static <T> Iteration<T> newIteration(final int index, final List<Solution<T>> solutions) {

@@ -1,4 +1,4 @@
-package org.miglecz.optimization.genetic.facade.operator;
+package org.miglecz.optimization.genetic.operator;
 
 import java.util.Comparator;
 import java.util.List;
@@ -16,11 +16,11 @@ public class TournamentSelection<T> implements SingleSelection<T> {
     public Solution<T> apply(final List<Solution<T>> solutions) {
         final int size = solutions.size();
         return IntStream.range(0, 2)
-                .mapToObj(i -> random.nextInt(size))
-                .map(solutions::get)
-                .sorted(comparator)
-                .limit(1)
-                .findAny()
-                .get();
+            .mapToObj(i -> random.nextInt(size))
+            .map(solutions::get)
+            .sorted(comparator)
+            .limit(1)
+            .findAny()
+            .get();
     }
 }

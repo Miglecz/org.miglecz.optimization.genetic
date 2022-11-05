@@ -1,4 +1,4 @@
-package org.miglecz.optimization.genetic.facade.operator;
+package org.miglecz.optimization.genetic.operator;
 
 import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,12 +15,12 @@ public class MutantSelectionTest extends TestBase {
     @DataProvider
     Object[][] data() {
         return new Object[][]{
-                new Object[]{1, (SingleSelection<Integer>) solutions -> newSolution(0, 1), List.of(newSolution(0, 1)), List.of(newSolution(2, 3))}
-                , new Object[]{2, new SingleSelection<Integer>() { //@formatter:off
-                    final AtomicInteger i = new AtomicInteger(1);
-                    @Override
-                    public Solution<Integer> apply(List<Solution<Integer>> solutions) {return solutions.get(i.getAndIncrement());}
-                }, List.of(newSolution(0, 0), newSolution(0, 1), newSolution(1, 2)), List.of(newSolution(2, 3), newSolution(5, 6))} //@formatter:on
+            new Object[]{1, (SingleSelection<Integer>) solutions -> newSolution(0, 1), List.of(newSolution(0, 1)), List.of(newSolution(2, 3))}
+            , new Object[]{2, new SingleSelection<Integer>() { //@formatter:off
+                final AtomicInteger i = new AtomicInteger(1);
+                @Override
+                public Solution<Integer> apply(List<Solution<Integer>> solutions) {return solutions.get(i.getAndIncrement());}
+            }, List.of(newSolution(0, 0), newSolution(0, 1), newSolution(1, 2)), List.of(newSolution(2, 3), newSolution(5, 6))} //@formatter:on
         };
     }
 

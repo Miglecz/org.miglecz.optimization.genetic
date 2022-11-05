@@ -1,4 +1,4 @@
-package org.miglecz.optimization.genetic.facade.operator;
+package org.miglecz.optimization.genetic.operator;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableList;
@@ -22,9 +22,9 @@ public class EliteSelection<T> implements MultiSelection<T> {
             return unmodifiableList(solutions);
         } else {
             return solutions.stream()
-                    .sorted(comparator)
-                    .limit(limit)
-                    .collect(toUnmodifiableList());
+                .sorted(comparator)
+                .limit(limit)
+                .collect(toUnmodifiableList());
         }
     }
 }

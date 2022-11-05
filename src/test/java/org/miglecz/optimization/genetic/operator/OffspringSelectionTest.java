@@ -1,4 +1,4 @@
-package org.miglecz.optimization.genetic.facade.operator;
+package org.miglecz.optimization.genetic.operator;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toUnmodifiableList;
@@ -56,11 +56,11 @@ public class OffspringSelectionTest extends TestBase {
     Object[][] data() {
         final Random random = new Random();
         return new Object[][]{
-                new Object[]{0}
-                , new Object[]{1}
-                , new Object[]{2}
-                , new Object[]{3}
-                , new Object[]{random.nextInt(98) + 2}
+            new Object[]{0}
+            , new Object[]{1}
+            , new Object[]{2}
+            , new Object[]{3}
+            , new Object[]{random.nextInt(98) + 2}
         };
     }
 
