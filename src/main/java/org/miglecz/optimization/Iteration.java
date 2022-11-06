@@ -1,6 +1,6 @@
 package org.miglecz.optimization;
 
-import static java.util.Collections.unmodifiableList;
+import static java.util.stream.Collectors.toUnmodifiableList;
 import static lombok.AccessLevel.PRIVATE;
 import java.util.Comparator;
 import java.util.List;
@@ -31,16 +31,25 @@ public class Iteration<T> {
      * @return iteration holding input @params
      */
     public static <T> Iteration<T> newIteration(final int index, final List<Solution<T>> solutions) {
-        return new Iteration<>(index, unmodifiableList(solutions));
+        return new Iteration<>(index, solutions.stream()
+            .sorted(Comparator.<Solution<T>>comparingDouble(Solution::getScore).reversed())
+            .collect(toUnmodifiableList())
+        );
     }
 
     /**
      * @return solution in the iteration by best score
      */
     public Optional<Solution<T>> getBest() {
-        if (best == null && !solutions.isEmpty()) {
-            best = solutions.stream().max(Comparator.comparingDouble(Solution::getScore)).orElse(null);
-        }
-        return Optional.ofNullable(best);
+        return solutions.stream().findFirst();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s{index=%d population=%d:%s}", getClass().getSimpleName(), getIndex(), getSolutions().size(), getSolutions());
+    }
+
+    public String toBestString() {
+        return String.format("%s{index=%d population=%d best=%s}", getClass().getSimpleName(), getIndex(), getSolutions().size(), getBest().orElse(null));
     }
 }
