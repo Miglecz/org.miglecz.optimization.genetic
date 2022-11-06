@@ -69,7 +69,7 @@ public class TakeWhilesTest {
     }
 
     @Test(dataProvider = "data")
-    void collectShouldReturnList(int generations, List<Iteration<Integer>> iterations, List<Iteration<Integer>> expected) {
+    void aboveFitnessThresholdShouldReturnList(final int generations, final List<Iteration<Integer>> iterations, final List<Iteration<Integer>> expected) {
         // Given
         // When
         final List<Iteration<Integer>> result = iterations.stream()
@@ -77,5 +77,24 @@ public class TakeWhilesTest {
             .collect(toList());
         // Then
         assertThat(result, equalTo(expected));
+    }
+
+    @Test
+    void belowScoreShouldReturnList() {
+        // Given
+        final List<Iteration<Integer>> iterations = List.of(
+            newIteration(0, List.of(newSolution(-1, 0)))
+            , newIteration(1, List.of(newSolution(0, 1)))
+            , newIteration(2, List.of(newSolution(1, 2)))
+        );
+        // When
+        final List<Iteration<Integer>> result = iterations.stream()
+            .takeWhile(TakeWhiles.belowScore(0))
+            .collect(toList());
+        // Then
+        assertThat(result, equalTo(List.of(
+            newIteration(0, List.of(newSolution(-1, 0)))
+            , newIteration(1, List.of(newSolution(0, 1)))
+        )));
     }
 }

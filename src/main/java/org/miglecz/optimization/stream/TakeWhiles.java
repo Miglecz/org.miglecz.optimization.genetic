@@ -11,6 +11,17 @@ import org.miglecz.optimization.Solution;
  */
 public class TakeWhiles {
     /**
+     * Take while the iterations best score is lower than the expected
+     *
+     * @param score expected final score of the solution
+     * @param <T>   type of implementation
+     * @return predicate of iteration
+     */
+    public static <T> Predicate<Iteration<T>> belowScore(final double score) {
+        return BelowScore.of(score);
+    }
+
+    /**
      * Take while the iterations delta score is not less than the given threshold
      *
      * @param epsilon threshold inclusive
@@ -45,6 +56,28 @@ public class TakeWhiles {
      */
     public static <T> Predicate<Iteration<T>> progressingIteration(final int steadyIterations) {
         return AboveThreshold.of(0, steadyIterations);
+    }
+
+    private static class BelowScore<T> implements Predicate<Iteration<T>> {
+        private final double threshold;
+        private double previous = -Double.MAX_VALUE;
+
+        private BelowScore(final double threshold) {
+            this.threshold = threshold;
+        }
+
+        static <T> BelowScore<T> of(final double threshold) {
+            return new BelowScore<>(threshold);
+        }
+
+        @Override
+        public boolean test(final Iteration<T> iteration) {
+            if (previous >= threshold) {
+                return false;
+            }
+            previous = iteration.getBest().map(Solution::getScore).orElse(-Double.MAX_VALUE);
+            return true;
+        }
     }
 
     private static class AboveThreshold<T> implements Predicate<Iteration<T>> {
