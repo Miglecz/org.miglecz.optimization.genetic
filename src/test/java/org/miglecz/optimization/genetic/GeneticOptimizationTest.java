@@ -1,10 +1,9 @@
 package org.miglecz.optimization.genetic;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toUnmodifiableList;
 import static java.util.stream.IntStream.range;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.miglecz.optimization.Iteration.newIteration;
 import static org.miglecz.optimization.Solution.newSolution;
 import java.util.Collections;
@@ -37,10 +36,10 @@ public class GeneticOptimizationTest extends TestBase {
             .limit(generations)
             .collect(toUnmodifiableList());
         // Then
-        assertThat(result, equalTo(range(0, generations)
+        assertThat(result).isEqualTo(range(0, generations)
             .mapToObj(i -> newIteration(i, emptyList()))
             .collect(toUnmodifiableList())
-        ));
+        );
     }
 
     @Test
@@ -59,11 +58,11 @@ public class GeneticOptimizationTest extends TestBase {
             .limit(3)
             .collect(toUnmodifiableList());
         // Then
-        assertThat(result, equalTo(List.of(
+        assertThat(result).isEqualTo(List.of(
             newIteration(0, List.of(newSolution(0, 0)))
             , newIteration(1, List.of(newSolution(1, 1)))
             , newIteration(2, List.of(newSolution(1, 1)))
-        )));
+        ));
     }
 
     @Test
@@ -84,10 +83,10 @@ public class GeneticOptimizationTest extends TestBase {
             .limit(2)
             .collect(toUnmodifiableList());
         // Then
-        assertThat(result, equalTo(List.of(
+        assertThat(result).isEqualTo(List.of(
             newIteration(0, emptyList())
             , newIteration(1, List.of(newSolution(1, 1), newSolution(2, 2), newSolution(3, 3)))
-        )));
+        ));
     }
 
     @Test
@@ -110,10 +109,10 @@ public class GeneticOptimizationTest extends TestBase {
             .limit(2)
             .collect(toUnmodifiableList());
         // Then
-        assertThat(result, equalTo(List.of(
+        assertThat(result).isEqualTo(List.of(
             newIteration(0, List.of())
             , newIteration(1, List.of(newSolution(3, 3)))
-        )));
+        ));
     }
 
     @Test(expectedExceptions = InitializationException.class)

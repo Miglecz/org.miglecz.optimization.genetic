@@ -1,8 +1,7 @@
 package org.miglecz.optimization.genetic.operator;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.miglecz.optimization.Solution.newSolution;
 import java.util.List;
 import java.util.Random;
@@ -25,7 +24,7 @@ public class InitialSelectionTest extends TestBase {
         // When
         final List<Solution<Integer>> result = subject.get();
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
     }
 
     @DataProvider(name = "data")

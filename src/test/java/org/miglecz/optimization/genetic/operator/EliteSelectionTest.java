@@ -1,7 +1,6 @@
 package org.miglecz.optimization.genetic.operator;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static com.google.common.truth.Truth.assertThat;
 import static org.miglecz.optimization.Solution.newSolution;
 import java.util.List;
 import org.miglecz.optimization.Solution;
@@ -38,6 +37,6 @@ public class EliteSelectionTest extends TestBase {
         // When
         final List<Solution<Integer>> result = subject.apply(previous);
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
     }
 }

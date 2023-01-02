@@ -1,10 +1,9 @@
 package org.miglecz.optimization.genetic;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.lang.Math.abs;
 import static java.util.List.of;
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.miglecz.optimization.genetic.GeneticOptimizationBuilder.builder;
 import static org.miglecz.optimization.stream.Collectors.toBestSolution;
 import static org.miglecz.optimization.stream.TakeWhiles.progressingIteration;
@@ -33,7 +32,7 @@ public class UsabilityTest extends TestBase {
             .map(Solution::getImpl)
             .collect(toList());
         // Then
-        assertThat(result, equalTo(of(10, 9, 8, 7, 6, 5, 4, 3, 2, 1)));
+        assertThat(result).isEqualTo(of(10, 9, 8, 7, 6, 5, 4, 3, 2, 1));
     }
 
     @Test
@@ -56,7 +55,7 @@ public class UsabilityTest extends TestBase {
             .map(Solution::getImpl)
             .collect(toList());
         // Then
-        assertThat(result, equalTo(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32)));
+        assertThat(result).isEqualTo(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32));
     }
 
     @Test
@@ -81,7 +80,7 @@ public class UsabilityTest extends TestBase {
             .map(Solution::getImpl)
             .collect(toList());
         // Then
-        assertThat(result, equalTo(List.of(1360, 877, 151, 78, 41, 34)));
+        assertThat(result).isEqualTo(List.of(1360, 877, 151, 78, 41, 34));
     }
 
     @Test
@@ -104,6 +103,6 @@ public class UsabilityTest extends TestBase {
             .collect(toBestSolution())
             .getImpl();
         // Then
-        assertThat(result, equalTo(32));
+        assertThat(result).isEqualTo(32);
     }
 }

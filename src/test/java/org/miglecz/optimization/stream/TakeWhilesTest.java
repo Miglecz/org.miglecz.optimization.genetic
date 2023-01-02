@@ -1,8 +1,7 @@
 package org.miglecz.optimization.stream;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.miglecz.optimization.Iteration.newIteration;
 import static org.miglecz.optimization.Solution.newSolution;
 import java.util.List;
@@ -76,7 +75,7 @@ public class TakeWhilesTest {
             .takeWhile(TakeWhiles.aboveFitnessThreshold(0, generations))
             .collect(toList());
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -92,9 +91,9 @@ public class TakeWhilesTest {
             .takeWhile(TakeWhiles.belowScore(0))
             .collect(toList());
         // Then
-        assertThat(result, equalTo(List.of(
+        assertThat(result).isEqualTo(List.of(
             newIteration(0, List.of(newSolution(-1, 0)))
             , newIteration(1, List.of(newSolution(0, 1)))
-        )));
+        ));
     }
 }

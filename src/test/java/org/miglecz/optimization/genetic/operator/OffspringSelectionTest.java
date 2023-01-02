@@ -1,9 +1,8 @@
 package org.miglecz.optimization.genetic.operator;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toUnmodifiableList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.miglecz.optimization.Solution.newSolution;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -30,7 +29,7 @@ public class OffspringSelectionTest extends TestBase {
         // When
         final List<Solution<Integer>> result = subject.apply(emptyList());
         // Then
-        assertThat(result, equalTo(emptyList()));
+        assertThat(result).isEqualTo(emptyList());
         verifyNoMoreInteractions(selection, crossover, fitness);
     }
 
@@ -48,7 +47,7 @@ public class OffspringSelectionTest extends TestBase {
         // When
         final List<Solution<Integer>> result = subject.apply(solutions);
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
         verifyNoMoreInteractions(selection, crossover, fitness);
     }
 
@@ -80,7 +79,7 @@ public class OffspringSelectionTest extends TestBase {
         // When
         final List<Solution<Integer>> result = subject.apply(solutions);
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
         verify(selection, times(limit * 2)).apply(solutions);
         verify(crossover, times(limit)).apply(any(Integer.class), any(Integer.class));
         verify(fitness, times(limit)).applyAsDouble(any(Integer.class));

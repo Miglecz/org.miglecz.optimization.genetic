@@ -1,7 +1,6 @@
 package org.miglecz.optimization.stream;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static com.google.common.truth.Truth.assertThat;
 import static org.miglecz.optimization.Iteration.newIteration;
 import static org.miglecz.optimization.Solution.newSolution;
 import static org.miglecz.optimization.stream.Collectors.toBestIteration;
@@ -30,14 +29,14 @@ public class CollectorsTest {
     }
 
     @Test(dataProvider = "toBestIterationData")
-    void collectShouldReturnBestIteration(List<Iteration<Integer>> iterations, Iteration<Integer> expected) {
+    void collectShouldReturnBestIteration(final List<Iteration<Integer>> iterations, final Iteration<Integer> expected) {
         // Given
         // When
         final Iteration<Integer> result = iterations.stream()
             .collect(toBestIteration())
             .orElse(null);
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
     }
 
     @DataProvider
@@ -55,12 +54,12 @@ public class CollectorsTest {
     }
 
     @Test(dataProvider = "bestSolutionData")
-    void collectShouldReturnBestSolution(List<Iteration<Integer>> iterations, Solution<Integer> expected) {
+    void collectShouldReturnBestSolution(final List<Iteration<Integer>> iterations, final Solution<Integer> expected) {
         // Given
         // When
         final Solution<Integer> result = iterations.stream()
             .collect(toBestSolution());
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
     }
 }

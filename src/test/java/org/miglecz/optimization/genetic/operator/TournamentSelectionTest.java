@@ -1,8 +1,7 @@
 package org.miglecz.optimization.genetic.operator;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.Collections.emptyList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.miglecz.optimization.Solution.newSolution;
 import java.util.List;
 import java.util.Random;
@@ -30,7 +29,7 @@ public class TournamentSelectionTest extends TestBase {
         // When
         final Solution<Integer> result = subject.apply(solutions);
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "bound must be positive")

@@ -1,9 +1,8 @@
 package org.miglecz.optimization.genetic;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toUnmodifiableList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.miglecz.optimization.Iteration.newIteration;
 import static org.miglecz.optimization.Solution.newSolution;
 import static org.miglecz.optimization.genetic.GeneticOptimizationBuilder.builder;
@@ -56,7 +55,7 @@ public class GeneticOptimizationBuilderTest extends TestBase {
     }
 
     @Test(dataProvider = "population")
-    void buildShouldFailWithDefaultPopulation(Integer population, Integer elite, Integer offspring, Integer mutant, Integer immigrant, Integer expected) {
+    void buildShouldFailWithDefaultPopulation(final Integer population, final Integer elite, final Integer offspring, final Integer mutant, final Integer immigrant, final Integer expected) {
         // Given
         var builder = builder(Integer.class);
         if (population != null) {
@@ -88,7 +87,7 @@ public class GeneticOptimizationBuilderTest extends TestBase {
             .getSolutions()
             .size();
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "fitness should not be null")
@@ -153,9 +152,9 @@ public class GeneticOptimizationBuilderTest extends TestBase {
             .limit(1)
             .collect(toList());
         // Then
-        assertThat(result, equalTo(List.of(
+        assertThat(result).isEqualTo(List.of(
             newIteration(0, impls.stream().map(impl -> newSolution(0, impl)).collect(toList()))
-        )));
+        ));
     }
 
     @DataProvider
@@ -199,7 +198,7 @@ public class GeneticOptimizationBuilderTest extends TestBase {
             .limit(generation)
             .collect(toList());
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
     }
 
     @DataProvider
@@ -243,7 +242,7 @@ public class GeneticOptimizationBuilderTest extends TestBase {
             .limit(generation)
             .collect(toList());
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
@@ -262,12 +261,12 @@ public class GeneticOptimizationBuilderTest extends TestBase {
             .limit(4)
             .collect(toList());
         // Then
-        assertThat(result, equalTo(List.of(
+        assertThat(result).isEqualTo(List.of(
             newIteration(0, List.of(newSolution(1, 1)))
             , newIteration(1, List.of(newSolution(2, 2)))
             , newIteration(2, List.of(newSolution(3, 3)))
             , newIteration(3, List.of(newSolution(4, 4)))
-        )));
+        ));
     }
 
     @DataProvider
@@ -306,7 +305,7 @@ public class GeneticOptimizationBuilderTest extends TestBase {
             .limit(limit)
             .collect(toList());
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "mutation should not be null")
@@ -358,6 +357,6 @@ public class GeneticOptimizationBuilderTest extends TestBase {
             .limit(limit)
             .collect(toList());
         // Then
-        assertThat(result, equalTo(expected));
+        assertThat(result).isEqualTo(expected);
     }
 }
