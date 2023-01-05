@@ -2,11 +2,13 @@ package org.miglecz.optimization.genetic;
 
 import static java.lang.String.format;
 import static java.util.Collections.unmodifiableList;
+import static java.util.stream.Collectors.toCollection;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.miglecz.optimization.Optimization;
 import org.miglecz.optimization.Solution;
@@ -29,12 +31,21 @@ public class GeneticOptimizationBuilder<T> {
     private Factory<T> factory;
     private Fitness<T> fitness;
     private Integer elite;
-    private final Comparator<Solution<T>> comparator = Comparator.<Solution<T>>comparingDouble(Solution::getScore).reversed();
+    private final Comparator<Solution<T>> comparator = descending();
     private Integer offspring;
     private Integer mutant;
     private Mutation<T> mutation;
     private Integer immigrant;
     private Crossover<T> crossover;
+    private Boolean parallel = false;
+
+    private static <T> Comparator<Solution<T>> ascending() {
+        return Comparator.comparingDouble(Solution::getScore);
+    }
+
+    private static <T> Comparator<Solution<T>> descending() {
+        return Comparator.<Solution<T>>comparingDouble(Solution::getScore).reversed();
+    }
 
     private GeneticOptimizationBuilder(final Class<T> klass) {
         this.klass = klass;
@@ -45,9 +56,10 @@ public class GeneticOptimizationBuilder<T> {
     }
 
     private static void notNull(final Object obj, final String message) {
-        if (Objects.isNull(obj)) {
-            throw new NullPointerException(format("%s should not be null", message));
-        }
+        Objects.requireNonNull(obj, () -> format("%s %s should not be null"
+            , GeneticOptimizationBuilder.class.getSimpleName()
+            , message
+        ));
     }
 
     public GeneticOptimizationBuilder<T> withRandom(final Random random) {
@@ -92,6 +104,11 @@ public class GeneticOptimizationBuilder<T> {
         return this;
     }
 
+    public GeneticOptimizationBuilder<T> withParallel(final boolean parallel) {
+        this.parallel = parallel;
+        return this;
+    }
+
     public Optimization<T> build() {
         notNull(random, "random");
         notNull(fitness, "fitness");
@@ -108,15 +125,21 @@ public class GeneticOptimizationBuilder<T> {
         }
         if (offspring != null) {
             notNull(crossover, "crossover");
-            mainSelection.add(new OffspringSelection<>(offspring, new TournamentSelection<>(random, comparator), crossover, fitness));
+            IntStream.range(0, offspring)
+                .mapToObj(i -> new OffspringSelection<>(1, new TournamentSelection<>(random, comparator), crossover, fitness))
+                .collect(toCollection(() -> mainSelection));
         }
         if (mutant != null) {
             notNull(mutant, "mutant");
             notNull(mutation, "mutation");
-            mainSelection.add(new MutantSelection<>(mutant, new RandomSelection<>(random), mutation, fitness));
+            IntStream.range(0, mutant)
+                .mapToObj(i -> new MutantSelection<>(1, new RandomSelection<>(random), mutation, fitness))
+                .collect(toCollection(() -> mainSelection));
         }
         if (immigrant != null) {
-            mainSelection.add(new ImmigrantSelection<>(immigrant, fitness, factory));
+            IntStream.range(0, immigrant)
+                .mapToObj(i -> new ImmigrantSelection<>(1, fitness, factory))
+                .collect(toCollection(() -> mainSelection));
         }
         return new GeneticOptimization<>(
             new InitialSelection<>(population, fitness, factory)
@@ -124,6 +147,7 @@ public class GeneticOptimizationBuilder<T> {
                 unmodifiableList(mainSelection)
                 , List.of(new EliteSelection<>(population, comparator))
             ) //@formatter:on
+            , parallel
         );
     }
 }

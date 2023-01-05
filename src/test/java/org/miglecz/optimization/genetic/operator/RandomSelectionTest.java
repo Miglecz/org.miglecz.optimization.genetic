@@ -29,7 +29,7 @@ public class RandomSelectionTest extends TestBase {
         assertThat(result).isEqualTo(expected);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "bound must be positive")
+    @Test(expectedExceptions = UnsupportedOperationException.class, expectedExceptionsMessageRegExp = "population should not be empty")
     void applyShouldReturnRandomItems() {
         // Given
         final RandomSelection<Integer> subject = new RandomSelection<>(new Random());

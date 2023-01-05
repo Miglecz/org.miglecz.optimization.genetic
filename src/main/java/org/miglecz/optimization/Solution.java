@@ -15,7 +15,7 @@ import lombok.Value;
 @RequiredArgsConstructor(access = PRIVATE)
 public class Solution<T> {
     double score;
-    T impl; //TODO make T subclass of Solution?
+    T impl;
 
     /**
      * Factory method

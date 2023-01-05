@@ -11,6 +11,13 @@ public class RandomSelection<T> implements SingleSelection<T> {
 
     @Override
     public Solution<T> apply(final List<Solution<T>> solutions) {
-        return solutions.get(random.nextInt(solutions.size()));
+        final int size = solutions.size();
+        if (size > 1) {
+            return solutions.get(random.nextInt(solutions.size()));
+        } else if (size == 1) {
+            return solutions.get(0);
+        } else {
+            throw new UnsupportedOperationException("population should not be empty");
+        }
     }
 }

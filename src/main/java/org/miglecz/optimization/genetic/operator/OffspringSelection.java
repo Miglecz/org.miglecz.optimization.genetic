@@ -18,18 +18,20 @@ public class OffspringSelection<T> implements MultiSelection<T> {
 
     @Override
     public List<Solution<T>> apply(final List<Solution<T>> solutions) {
-        if (solutions.isEmpty()) {
-            return emptyList();
-        } else if (solutions.size() == 1) {
+        final int size = solutions.size();
+        if (size > 1) {
+            return IntStream.range(0, limit)
+                .mapToObj(i -> IntStream.range(0, 2).mapToObj(j -> selection.apply(solutions)).collect(toUnmodifiableList()))
+                .map(list -> list.stream().map(Solution::getImpl).collect(toUnmodifiableList()))
+                .map(list -> crossover.apply(list.get(0), list.get(1)))
+                .map(impl -> newSolution(fitness.applyAsDouble(impl), impl))
+                .collect(toUnmodifiableList());
+        } else if (size == 1) {
             return IntStream.range(0, limit)
                 .mapToObj(i -> solutions.get(0))
                 .collect(toUnmodifiableList());
+        } else {
+            return emptyList();
         }
-        return IntStream.range(0, limit)
-            .mapToObj(i -> List.of(selection.apply(solutions), selection.apply(solutions)))
-            .map(list -> list.stream().map(Solution::getImpl).collect(toUnmodifiableList()))
-            .map(list -> crossover.apply(list.get(0), list.get(1)))
-            .map(impl -> newSolution(fitness.applyAsDouble(impl), impl))
-            .collect(toUnmodifiableList());
     }
 }

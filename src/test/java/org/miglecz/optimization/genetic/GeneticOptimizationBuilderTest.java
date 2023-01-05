@@ -31,7 +31,7 @@ public class GeneticOptimizationBuilderTest extends TestBase {
         // Then
     }
 
-    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "random should not be null")
+    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "GeneticOptimizationBuilder random should not be null")
     void buildShouldFailWithRandomNull() {
         // Given
         // When
@@ -90,7 +90,7 @@ public class GeneticOptimizationBuilderTest extends TestBase {
         assertThat(result).isEqualTo(expected);
     }
 
-    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "fitness should not be null")
+    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "GeneticOptimizationBuilder fitness should not be null")
     void buildShouldFailWithFitnessNull() {
         // Given
         // When
@@ -102,7 +102,7 @@ public class GeneticOptimizationBuilderTest extends TestBase {
         // Then
     }
 
-    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "factory should not be null")
+    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "GeneticOptimizationBuilder factory should not be null")
     void buildShouldFailWithDefaultFactory() {
         // Given
         // When
@@ -114,7 +114,7 @@ public class GeneticOptimizationBuilderTest extends TestBase {
         // Then
     }
 
-    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "factory should not be null")
+    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "GeneticOptimizationBuilder factory should not be null")
     void buildShouldFailWithFactoryNull() {
         // Given
         // When
@@ -308,7 +308,7 @@ public class GeneticOptimizationBuilderTest extends TestBase {
         assertThat(result).isEqualTo(expected);
     }
 
-    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "mutation should not be null")
+    @Test(expectedExceptions = NullPointerException.class, expectedExceptionsMessageRegExp = "GeneticOptimizationBuilder mutation should not be null")
     void builderShouldFailWhenMutationNull() {
         // Given
         // When

@@ -32,7 +32,7 @@ public class TournamentSelectionTest extends TestBase {
         assertThat(result).isEqualTo(expected);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = "bound must be positive")
+    @Test(expectedExceptions = UnsupportedOperationException.class, expectedExceptionsMessageRegExp = "population should not be empty")
     void applyShouldFail() {
         // Given
         final TournamentSelection<Integer> subject = new TournamentSelection<>(new Random(0), comparator(Integer.class));

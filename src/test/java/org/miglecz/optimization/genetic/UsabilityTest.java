@@ -20,7 +20,7 @@ public class UsabilityTest extends TestBase {
         // Given
         final Optimization<Integer> optimization = builder(Integer.class)
             .withPopulation(1)
-            .withFitness(impl -> 0)
+            .withFitness(impl -> 0) //TODO change API to not require unused stuff, add more testcases
             .withFactory(() -> 10)
             .withMutant(1, impl -> impl - 1)
             .build();
@@ -80,7 +80,7 @@ public class UsabilityTest extends TestBase {
             .map(Solution::getImpl)
             .collect(toList());
         // Then
-        assertThat(result).isEqualTo(List.of(1360, 877, 151, 78, 41, 34));
+        assertThat(result).isEqualTo(List.of(1360, 223, 105, 56, 31, 31));
     }
 
     @Test

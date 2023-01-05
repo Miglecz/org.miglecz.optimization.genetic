@@ -15,12 +15,18 @@ public class TournamentSelection<T> implements SingleSelection<T> {
     @Override
     public Solution<T> apply(final List<Solution<T>> solutions) {
         final int size = solutions.size();
-        return IntStream.range(0, 2)
-            .mapToObj(i -> random.nextInt(size))
-            .map(solutions::get)
-            .sorted(comparator)
-            .limit(1)
-            .findAny()
-            .get();
+        if (size > 1) {
+            return IntStream.range(0, 2)
+                .mapToObj(i -> random.nextInt(size))
+                .map(solutions::get)
+                .sorted(comparator)
+                .limit(1)
+                .findAny()
+                .orElse(null);
+        } else if (size == 1) {
+            return solutions.get(0);
+        } else {
+            throw new UnsupportedOperationException("population should not be empty");
+        }
     }
 }
