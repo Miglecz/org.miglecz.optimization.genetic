@@ -1,5 +1,7 @@
 package org.miglecz.optimization.stream;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.function.Predicate;
 import org.miglecz.optimization.Iteration;
@@ -56,6 +58,18 @@ public class TakeWhiles {
      */
     public static <T> Predicate<Iteration<T>> progressingIteration(final int steadyIterations) {
         return AboveThreshold.of(0, steadyIterations);
+    }
+
+    /**
+     * Take while time duration is not exceeded
+     * and stop if duration have passed
+     *
+     * @param duration seconds
+     * @param <T>      type of implementation
+     * @return predicate of iteration
+     */
+    public static <T> Predicate<Iteration<T>> duration(final Duration duration) {
+        return InTime.of(duration);
     }
 
     private static class BelowScore<T> implements Predicate<Iteration<T>> {
@@ -122,6 +136,28 @@ public class TakeWhiles {
             previous = best;
             sequence = sequenceThreshold;
             return true;
+        }
+    }
+
+    private static class InTime<T> implements Predicate<Iteration<T>> {
+        private final long thresholdMillis;
+        private Long endMillis = null;
+
+        private InTime(final Duration duration) {
+            thresholdMillis = duration.get(ChronoUnit.SECONDS) * 1000;
+        }
+
+        static <T> InTime<T> of(final Duration duration) {
+            return new InTime<>(duration);
+        }
+
+        @Override
+        public boolean test(final Iteration<T> iteration) {
+            final var currentTimeMillis = System.currentTimeMillis();
+            if (endMillis == null) {
+                endMillis = currentTimeMillis + thresholdMillis;
+            }
+            return currentTimeMillis < endMillis;
         }
     }
 }
