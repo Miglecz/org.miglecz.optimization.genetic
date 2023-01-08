@@ -59,4 +59,19 @@ public class Crossovers {
         }
         return result;
     }
+
+    public static int[] uniformCrossover(final int[] parent1, final int[] parent2) {
+        return uniformCrossover(new Random(), parent1, parent2);
+    }
+
+    public static int[] uniformCrossover(final Random random, final int[] parent1, final int[] parent2) {
+        if (parent1.length != parent2.length) {
+            throw new IllegalArgumentException("parents lengths should be equal");
+        }
+        final int[] result = new int[parent1.length];
+        for (int i = 0; i < result.length; ++i) {
+            result[i] = random.nextBoolean() ? parent1[i] : parent2[i];
+        }
+        return result;
+    }
 }
