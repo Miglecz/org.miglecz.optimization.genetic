@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.function.Predicate;
+import lombok.extern.flogger.Flogger;
 import org.miglecz.optimization.Iteration;
 import org.miglecz.optimization.Optimization;
 import org.miglecz.optimization.Solution;
@@ -94,6 +95,7 @@ public class TakeWhiles {
         }
     }
 
+    @Flogger
     private static class AboveThreshold<T> implements Predicate<Iteration<T>> {
         private final double epsilon;
         private final int sequenceThreshold;
@@ -131,7 +133,9 @@ public class TakeWhiles {
             }
             final double delta = best - previous;
             if (delta <= epsilon) {
-                return --sequence > 0;
+                sequence--;
+                log.atInfo().log("takeWhiles %s > 0", sequence);
+                return sequence > 0;
             }
             previous = best;
             sequence = sequenceThreshold;
