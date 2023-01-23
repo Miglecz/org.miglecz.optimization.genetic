@@ -3,6 +3,7 @@ package org.miglecz.optimization.genetic.operator;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
 /**
@@ -22,7 +23,7 @@ public class Crossovers {
      * @param <T>     type of implementation
      * @return list of offspring with any length
      */
-    public static <T> T[] varyingCrossover(final Random random, final T[] parent1, final T[] parent2) {
+    public static <T> T[] varyingCrossover(final RandomGenerator random, final T[] parent1, final T[] parent2) {
         return (T[]) Stream.concat(
                 Arrays.stream(parent1).limit(random.nextInt(parent1.length) + 1)
                 , Arrays.stream(parent2).skip(random.nextInt(parent2.length))
@@ -34,7 +35,7 @@ public class Crossovers {
         return uniformCrossover(new Random(), parent1, parent2);
     }
 
-    public static <T> T[] uniformCrossover(final Random random, final T[] parent1, final T[] parent2) {
+    public static <T> T[] uniformCrossover(final RandomGenerator random, final T[] parent1, final T[] parent2) {
         if (parent1.length != parent2.length) {
             throw new IllegalArgumentException("parents lengths should be equal");
         }
@@ -49,7 +50,7 @@ public class Crossovers {
         return uniformCrossover(new Random(), parent1, parent2);
     }
 
-    public static float[] uniformCrossover(final Random random, final float[] parent1, final float[] parent2) {
+    public static float[] uniformCrossover(final RandomGenerator random, final float[] parent1, final float[] parent2) {
         if (parent1.length != parent2.length) {
             throw new IllegalArgumentException("parents lengths should be equal");
         }
@@ -64,7 +65,7 @@ public class Crossovers {
         return uniformCrossover(new Random(), parent1, parent2);
     }
 
-    public static int[] uniformCrossover(final Random random, final int[] parent1, final int[] parent2) {
+    public static int[] uniformCrossover(final RandomGenerator random, final int[] parent1, final int[] parent2) {
         if (parent1.length != parent2.length) {
             throw new IllegalArgumentException("parents lengths should be equal");
         }

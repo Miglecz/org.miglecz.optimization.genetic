@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 import org.miglecz.optimization.Solution;
 import org.miglecz.optimization.genetic.TestBase;
@@ -53,7 +54,7 @@ public class OffspringSelectionTest extends TestBase {
 
     @DataProvider
     Object[][] data() {
-        final Random random = new Random();
+        final RandomGenerator random = new Random();
         return new Object[][]{
             new Object[]{0}
             , new Object[]{1}

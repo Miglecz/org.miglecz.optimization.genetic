@@ -1,13 +1,13 @@
 package org.miglecz.optimization.genetic.operator;
 
 import java.util.List;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 import lombok.RequiredArgsConstructor;
 import org.miglecz.optimization.Solution;
 
 @RequiredArgsConstructor
 public class RandomSelection<T> implements SingleSelection<T> {
-    private final Random random;
+    private final RandomGenerator random;
 
     @Override
     public Solution<T> apply(final List<Solution<T>> solutions) {

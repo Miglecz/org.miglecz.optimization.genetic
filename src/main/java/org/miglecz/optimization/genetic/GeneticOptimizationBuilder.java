@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.miglecz.optimization.Optimization;
@@ -26,7 +27,7 @@ import org.miglecz.optimization.genetic.operator.TournamentSelection;
 
 public class GeneticOptimizationBuilder<T> {
     private final Class<T> klass;
-    private Random random = new Random(1);
+    private RandomGenerator random = new Random(1);
     private Integer population;
     private Factory<T> factory;
     private Fitness<T> fitness;
@@ -62,7 +63,7 @@ public class GeneticOptimizationBuilder<T> {
         ));
     }
 
-    public GeneticOptimizationBuilder<T> withRandom(final Random random) {
+    public GeneticOptimizationBuilder<T> withRandom(final RandomGenerator random) {
         this.random = random;
         return this;
     }

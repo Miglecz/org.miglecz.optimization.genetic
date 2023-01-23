@@ -5,6 +5,7 @@ import static java.util.Collections.emptyList;
 import static org.miglecz.optimization.Solution.newSolution;
 import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import org.miglecz.optimization.Solution;
 import org.miglecz.optimization.genetic.TestBase;
 import org.testng.annotations.DataProvider;
@@ -20,7 +21,7 @@ public class RandomSelectionTest extends TestBase {
     }
 
     @Test(dataProvider = "data")
-    void applyShouldReturnRandomItems(final List<Solution<Integer>> previous, final Solution<Integer> expected, final Random random) {
+    void applyShouldReturnRandomItems(final List<Solution<Integer>> previous, final Solution<Integer> expected, final RandomGenerator random) {
         // Given
         final RandomSelection<Integer> subject = new RandomSelection<>(random);
         // When

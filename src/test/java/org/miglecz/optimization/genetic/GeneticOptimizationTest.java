@@ -9,6 +9,7 @@ import static org.miglecz.optimization.Solution.newSolution;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import org.miglecz.optimization.Iteration;
 import org.miglecz.optimization.genetic.exception.InitializationException;
 import org.miglecz.optimization.genetic.exception.SelectionException;
@@ -18,7 +19,7 @@ import org.testng.annotations.Test;
 public class GeneticOptimizationTest extends TestBase {
     @DataProvider(name = "data")
     Object[][] data() {
-        final Random random = new Random();
+        final RandomGenerator random = new Random();
         return new Object[][]{
             new Object[]{0}
             , new Object[]{1}

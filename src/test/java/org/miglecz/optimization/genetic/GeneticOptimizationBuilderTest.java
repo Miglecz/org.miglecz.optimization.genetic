@@ -9,6 +9,7 @@ import static org.miglecz.optimization.genetic.GeneticOptimizationBuilder.builde
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 import org.miglecz.optimization.Iteration;
 import org.miglecz.optimization.genetic.operator.Crossover;
@@ -128,7 +129,7 @@ public class GeneticOptimizationBuilderTest extends TestBase {
 
     @DataProvider
     Object[][] data() {
-        final Random random = new Random();
+        final RandomGenerator random = new Random();
         return new Object[][]{
             new Object[]{List.of()}
             , new Object[]{List.of(1)}

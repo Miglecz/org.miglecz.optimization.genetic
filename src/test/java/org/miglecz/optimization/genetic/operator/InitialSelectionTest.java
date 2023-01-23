@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import static org.miglecz.optimization.Solution.newSolution;
 import java.util.List;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 import org.miglecz.optimization.Solution;
 import org.miglecz.optimization.genetic.TestBase;
@@ -29,7 +30,7 @@ public class InitialSelectionTest extends TestBase {
 
     @DataProvider(name = "data")
     Object[][] data() {
-        final Random random = new Random();
+        final RandomGenerator random = new Random();
         final List<Integer> impls = IntStream.range(0, random.nextInt(20))
             .mapToObj(i -> random.nextInt(100) + 2)
             .collect(toList());

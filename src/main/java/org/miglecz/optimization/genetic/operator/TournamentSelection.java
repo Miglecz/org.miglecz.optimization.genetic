@@ -2,14 +2,14 @@ package org.miglecz.optimization.genetic.operator;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.miglecz.optimization.Solution;
 
 @RequiredArgsConstructor
 public class TournamentSelection<T> implements SingleSelection<T> {
-    private final Random random;
+    private final RandomGenerator random;
     private final Comparator<Solution<T>> comparator;
 
     @Override
