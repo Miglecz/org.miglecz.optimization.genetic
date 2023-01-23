@@ -44,6 +44,24 @@ public class Iteration<T> {
         return solutions.stream().findFirst();
     }
 
+    /**
+     * @return solution in the iteration by median score
+     */
+    public Optional<Solution<T>> getMedian() {
+        if (solutions.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(solutions.get(solutions.size() / 2));
+    }
+
+    public Double getAverageScore() {
+        return solutions.stream()
+            .map(Solution::getScore)
+            .reduce(Double::sum)
+            .map(d -> d / solutions.size())
+            .orElse(null);
+    }
+
     @Override
     public String toString() {
         return String.format("%s{index=%d population=%d:%s}", getClass().getSimpleName(), getIndex(), getSolutions().size(), getSolutions());
