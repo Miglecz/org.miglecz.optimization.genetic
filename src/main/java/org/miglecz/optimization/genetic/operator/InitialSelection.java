@@ -20,4 +20,9 @@ public class InitialSelection<T> implements org.miglecz.optimization.genetic.Ini
             .map(impl -> newSolution(fitness.applyAsDouble(impl), impl))
             .collect(toUnmodifiableList());
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{limit=" + limit + "}";
+    }
 }

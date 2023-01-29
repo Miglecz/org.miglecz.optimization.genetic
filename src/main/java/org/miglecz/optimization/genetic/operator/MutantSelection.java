@@ -1,6 +1,5 @@
 package org.miglecz.optimization.genetic.operator;
 
-import static java.util.stream.Collectors.toUnmodifiableList;
 import static org.miglecz.optimization.Solution.newSolution;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -22,6 +21,11 @@ public class MutantSelection<T> implements MultiSelection<T> {
             .map(Solution::getImpl)
             .map(mutation)
             .map(impl -> newSolution(fitness.applyAsDouble(impl), impl))
-            .collect(toUnmodifiableList());
+            .toList();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{limit=" + limit + "}";
     }
 }

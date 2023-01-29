@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 import org.miglecz.optimization.Iteration;
 import org.miglecz.optimization.Optimization;
 import org.miglecz.optimization.Solution;
 import org.miglecz.optimization.genetic.exception.InitializationException;
 import org.miglecz.optimization.genetic.exception.SelectionException;
 
+@Slf4j
 class GeneticOptimization<T> implements Optimization<T> {
     private final InitSelection<T> initialize;
     private final List<List<MultiSelection<T>>> selectionsList;
@@ -45,6 +47,11 @@ class GeneticOptimization<T> implements Optimization<T> {
             result = Collections.synchronizedList(new ArrayList<>());
             final List<Solution<T>> finalResult = result;
             final List<Solution<T>> finalPrevious = previous;
+            log.debug("parallel={} selections={}:{}"
+                , parallel
+                , selections.size()
+                , selections
+            );
             (parallel ? selections.parallelStream() : selections.stream())
                 .forEach(selection -> collect(finalResult, finalPrevious, selection));
             previous = result;

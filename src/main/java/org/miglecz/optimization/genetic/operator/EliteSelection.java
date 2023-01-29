@@ -2,7 +2,6 @@ package org.miglecz.optimization.genetic.operator;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableList;
-import static java.util.stream.Collectors.toUnmodifiableList;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,12 @@ public class EliteSelection<T> implements MultiSelection<T> {
             return solutions.stream()
                 .sorted(comparator)
                 .limit(limit)
-                .collect(toUnmodifiableList());
+                .toList();
         }
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{limit=" + limit + "}";
     }
 }
