@@ -143,7 +143,10 @@ public class GeneticOptimizationBuilder<T> {
                 .collect(toCollection(() -> mainSelection));
         }
         return new GeneticOptimization<>(
-            new InitialSelection<>(population, fitness, factory)
+            IntStream.range(0, population)
+                .mapToObj(i -> new InitialSelection<>(1, fitness, factory))
+                .map(initialSelection -> (InitSelection<T>) initialSelection)
+                .toList()
             , List.of( //@formatter:off
                 unmodifiableList(mainSelection)
                 , List.of(new EliteSelection<>(population, comparator))

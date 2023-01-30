@@ -2,7 +2,6 @@ package org.miglecz.optimization.genetic;
 
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toUnmodifiableList;
 import static java.util.stream.IntStream.range;
 import static org.miglecz.optimization.Iteration.newIteration;
 import static org.miglecz.optimization.Solution.newSolution;
@@ -31,23 +30,23 @@ public class GeneticOptimizationTest extends TestBase {
     @Test(dataProvider = "data")
     void streamShouldGenerateIterations(final int generations) {
         // Given
-        final var optimization = new GeneticOptimization<Integer>(Collections::emptyList, emptyList());
+        final var optimization = new GeneticOptimization<Integer>(List.of(Collections::emptyList), emptyList());
         // When
         final List<Iteration<Integer>> result = optimization.stream()
             .limit(generations)
-            .collect(toUnmodifiableList());
+            .toList();
         // Then
         assertThat(result).isEqualTo(range(0, generations)
             .mapToObj(i -> newIteration(i, emptyList()))
-            .collect(toUnmodifiableList())
+            .toList()
         );
     }
 
     @Test
     void selectionsShouldOverrideInitialize() {
         // Given
-        final var optimization = new GeneticOptimization<>(
-            () -> List.of(newSolution(0, 0)),
+        final GeneticOptimization<Integer> optimization = new GeneticOptimization<>(
+            List.of(() -> List.of(newSolution(0, 0))),
             List.of(
                 List.of(
                     previousGeneration -> List.of(newSolution(1, 1))
@@ -57,7 +56,7 @@ public class GeneticOptimizationTest extends TestBase {
         // When
         final List<Iteration<Integer>> result = optimization.stream()
             .limit(3)
-            .collect(toUnmodifiableList());
+            .toList();
         // Then
         assertThat(result).isEqualTo(List.of(
             newIteration(0, List.of(newSolution(0, 0)))
@@ -70,7 +69,7 @@ public class GeneticOptimizationTest extends TestBase {
     void selectionShouldAggregate() {
         // Given
         final var optimization = new GeneticOptimization<Integer>(
-            Collections::emptyList,
+            List.of(Collections::emptyList),
             List.of(
                 List.of(
                     previousGeneration -> List.of(newSolution(1, 1))
@@ -82,7 +81,7 @@ public class GeneticOptimizationTest extends TestBase {
         // When
         final List<Iteration<Integer>> result = optimization.stream()
             .limit(2)
-            .collect(toUnmodifiableList());
+            .toList();
         // Then
         assertThat(result).isEqualTo(List.of(
             newIteration(0, emptyList())
@@ -94,7 +93,7 @@ public class GeneticOptimizationTest extends TestBase {
     void selectionsShouldOverrideSelections() {
         // Given
         final var optimization = new GeneticOptimization<Integer>(
-            Collections::emptyList,
+            List.of(Collections::emptyList),
             List.of(
                 List.of(
                     previousGeneration -> List.of(newSolution(1, 1))
@@ -108,7 +107,7 @@ public class GeneticOptimizationTest extends TestBase {
         // When
         final List<Iteration<Integer>> result = optimization.stream()
             .limit(2)
-            .collect(toUnmodifiableList());
+            .toList();
         // Then
         assertThat(result).isEqualTo(List.of(
             newIteration(0, List.of())
@@ -120,9 +119,9 @@ public class GeneticOptimizationTest extends TestBase {
     void initErrorShouldThrowException() {
         // Given
         final var optimization = new GeneticOptimization<Integer>(
-            () -> {
+            List.of(() -> {
                 throw new RuntimeException();
-            },
+            }),
             List.of()
         );
         // When
@@ -136,7 +135,7 @@ public class GeneticOptimizationTest extends TestBase {
     void initNullResultShouldThrowException() {
         // Given
         final var optimization = new GeneticOptimization<Integer>(
-            () -> null,
+            List.of(() -> null),
             List.of()
         );
         // When
@@ -150,7 +149,7 @@ public class GeneticOptimizationTest extends TestBase {
     void selectionErrorShouldThrowException() {
         // Given
         final var optimization = new GeneticOptimization<Integer>(
-            Collections::emptyList,
+            List.of(Collections::emptyList),
             List.of(
                 List.of(
                     previousGeneration -> {
@@ -170,7 +169,7 @@ public class GeneticOptimizationTest extends TestBase {
     void selectionNullResultShouldThrowException() {
         // Given
         final var optimization = new GeneticOptimization<Integer>(
-            Collections::emptyList,
+            List.of(Collections::emptyList),
             List.of(
                 List.of(
                     previousGeneration -> null

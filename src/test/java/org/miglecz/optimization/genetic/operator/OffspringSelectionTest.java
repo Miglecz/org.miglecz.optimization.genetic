@@ -2,7 +2,6 @@ package org.miglecz.optimization.genetic.operator;
 
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toUnmodifiableList;
 import static org.miglecz.optimization.Solution.newSolution;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -44,7 +43,7 @@ public class OffspringSelectionTest extends TestBase {
         final OffspringSelection<Integer> subject = new OffspringSelection<>(limit, selection, crossover, fitness);
         final Solution<Integer> solution = newSolution(1, 2);
         final List<Solution<Integer>> solutions = List.of(solution);
-        final List<Solution<Integer>> expected = IntStream.range(0, limit).mapToObj(i -> solution).collect(toUnmodifiableList());
+        final List<Solution<Integer>> expected = IntStream.range(0, limit).mapToObj(i -> solution).toList();
         // When
         final List<Solution<Integer>> result = subject.apply(solutions);
         // Then
@@ -72,7 +71,7 @@ public class OffspringSelectionTest extends TestBase {
         final Solution<Integer> solution = newSolution(8, 7);
         final Fitness<Integer> fitness = mock(Fitness.class);
         final List<Solution<Integer>> solutions = List.of(newSolution(0, 1), newSolution(1, 2));
-        final List<Solution<Integer>> expected = IntStream.range(0, limit).mapToObj(i -> solution).collect(toUnmodifiableList());
+        final List<Solution<Integer>> expected = IntStream.range(0, limit).mapToObj(i -> solution).toList();
         final OffspringSelection<Integer> subject = new OffspringSelection<>(limit, selection, crossover, fitness);
         given(selection.apply(solutions)).willReturn(solution);
         given(crossover.apply(any(Integer.class), any(Integer.class))).willReturn(7);

@@ -1,6 +1,5 @@
 package org.miglecz.optimization.genetic.operator;
 
-import static java.util.stream.Collectors.toUnmodifiableList;
 import static org.miglecz.optimization.Solution.newSolution;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -18,7 +17,7 @@ public class InitialSelection<T> implements org.miglecz.optimization.genetic.Ini
         return IntStream.range(0, limit)
             .mapToObj(i -> factory.get())
             .map(impl -> newSolution(fitness.applyAsDouble(impl), impl))
-            .collect(toUnmodifiableList());
+            .toList();
     }
 
     @Override
