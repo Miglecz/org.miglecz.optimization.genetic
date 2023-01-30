@@ -1,5 +1,6 @@
 package org.miglecz.optimization.genetic;
 
+import static com.google.common.flogger.LazyArgs.lazy;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.unmodifiableList;
 import static org.miglecz.optimization.Iteration.newIteration;
@@ -9,14 +10,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.flogger.Flogger;
 import org.miglecz.optimization.Iteration;
 import org.miglecz.optimization.Optimization;
 import org.miglecz.optimization.Solution;
 import org.miglecz.optimization.genetic.exception.InitializationException;
 import org.miglecz.optimization.genetic.exception.SelectionException;
 
-@Slf4j
+@Flogger
 class GeneticOptimization<T> implements Optimization<T> {
     private final List<InitSelection<T>> initializeList;
     private final List<List<MultiSelection<T>>> selectionsList;
@@ -36,11 +37,15 @@ class GeneticOptimization<T> implements Optimization<T> {
     @Override
     public Stream<Iteration<T>> stream() {
         try {
-            return Stream.iterate(newIteration(0, (parallel ? initializeList.parallelStream() : initializeList.stream())
+            log.atConfig().log("initializing=%s:%s"
+                , initializeList.size()
+                , lazy(() -> initializeList)
+            );
+            final var initial = (parallel ? initializeList.parallelStream() : initializeList.stream())
                 .map(Supplier::get)
                 .flatMap(Collection::stream)
-                .toList()
-            ), this::derive);
+                .toList();
+            return Stream.iterate(newIteration(0, initial), this::derive);
         } catch (final Exception e) {
             throw new InitializationException(e);
         }
@@ -53,10 +58,9 @@ class GeneticOptimization<T> implements Optimization<T> {
             result = Collections.synchronizedList(new ArrayList<>());
             final List<Solution<T>> finalResult = result;
             final List<Solution<T>> finalPrevious = previous;
-            log.debug("parallel={} selections={}:{}"
-                , parallel
+            log.atConfig().log("selections=%s:%s"
                 , selections.size()
-                , selections
+                , lazy(() -> selections)
             );
             (parallel ? selections.parallelStream() : selections.stream())
                 .forEach(selection -> collect(finalResult, finalPrevious, selection));
